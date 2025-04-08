@@ -1,0 +1,170 @@
+openapi: 3.0.0
+info:
+  title: Firebase Firestore REST API - Cards Legends
+  version: 1.1.0
+
+servers:
+  - url: https://firestore.googleapis.com/v1/projects/{projectId}/databases/(default)/documents
+    variables:
+      projectId:
+        default: cards-legends
+
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+
+  parameters:
+    projectId:
+      name: projectId
+      in: path
+      required: true
+      schema:
+        type: string
+
+security:
+  - BearerAuth: []
+
+paths:
+  /regions:
+    post:
+      summary: Criar região
+      operationId: createRegion
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                fields:
+                  type: object
+                  properties:
+                    name:
+                      type: object
+                      properties:
+                        stringValue:
+                          type: string
+                    code:
+                      type: object
+                      properties:
+                        stringValue:
+                          type: string
+                    iconUrl:
+                      type: object
+                      properties:
+                        stringValue:
+                          type: string
+      responses:
+        '200':
+          description: Região criada com sucesso
+
+  /leagues:
+    post:
+      summary: Criar liga (referencia região)
+      operationId: createLeague
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                fields:
+                  type: object
+                  properties:
+                    name:
+                      type: object
+                      properties:
+                        stringValue:
+                          type: string
+                    regionId:
+                      type: object
+                      properties:
+                        stringValue:
+                          type: string
+                    iconUrl:
+                      type: object
+                      properties:
+                        stringValue:
+                          type: string
+      responses:
+        '200':
+          description: Liga criada
+
+  /teams:
+    post:
+      summary: Criar time
+      operationId: createTeam
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                fields:
+                  type: object
+                  properties:
+                    name:
+                      type: object
+                      properties:
+                        stringValue:
+                          type: string
+                    logoUrl:
+                      type: object
+                      properties:
+                        stringValue:
+                          type: string
+                    leagueId:
+                      type: object
+                      properties:
+                        stringValue:
+                          type: string
+      responses:
+        '200':
+          description: Time criado
+
+  /players:
+    post:
+      summary: Criar jogador
+      operationId: createPlayer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                fields:
+                  type: object
+                  properties:
+                    name:
+                      type: object
+                      properties:
+                        stringValue:
+                          type: string
+                    imageUrl:
+                      type: object
+                      properties:
+                        stringValue:
+                          type: string
+                    role:
+                      type: object
+                      properties:
+                        stringValue:
+                          type: string
+                    age:
+                      type: object
+                      properties:
+                        integerValue:
+                          type: integer
+                    teamId:
+                      type: object
+                      properties:
+                        stringValue:
+                          type: string
+      responses:
+        '200':
+          description: Jogador criado

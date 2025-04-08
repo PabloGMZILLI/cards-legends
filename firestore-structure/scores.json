@@ -1,0 +1,13 @@
+{
+    "id": "sdfg23423sdfasf",
+    "playerId": "lucas123",
+    "roomId": "room123",
+    "round": 3,
+    "createdAt": "2023-10-01T12:00:00Z",
+    "averageScore": 86,
+    "votes": [
+      { "userId": "user1", "score": 88 },
+      { "userId": "user2", "score": 84 }
+    ]
+  }
+  

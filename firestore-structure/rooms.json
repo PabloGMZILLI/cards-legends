@@ -1,0 +1,12 @@
+{
+    "id": "room123",
+    "name": "Rodada 3 - LTA Sul",
+    "createdBy": "adminId",
+    "createdAt": "2023-10-01T12:00:00Z",
+    "players": ["lucas123", "maria456", "joao789"],
+    "round": 3,
+    "isClosed": false,
+    "roundTitle": "Rodada 3",
+    "roundingMode": "ceil"
+}
+  

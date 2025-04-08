@@ -1,0 +1,139 @@
+{
+  "_type": "export",
+  "__export_format": 4,
+  "__export_date": "2025-04-07T23:02:52.510231Z",
+  "__export_source": "chatgpt-insomnia-export",
+  "resources": [
+    {
+      "_id": "wrk_cards_legends",
+      "created": 1744066972510,
+      "description": "Cards Legends Firebase Collection",
+      "modified": 1744066972510,
+      "name": "Cards Legends API",
+      "_type": "workspace"
+    },
+    {
+      "_id": "env_cards_legends_base",
+      "parentId": "wrk_cards_legends",
+      "name": "Base Environment",
+      "_type": "environment",
+      "data": {
+        "base_url": "https://firestore.googleapis.com/v1/projects/cards-legends/databases/(default)/documents",
+        "api_key": "SUA_API_KEY",
+        "bearer_token": "COLE_AQUI_SEU_TOKEN"
+      }
+    },
+    {
+      "_id": "req_create_user",
+      "parentId": "wrk_cards_legends",
+      "name": "\ud83d\udd10 Criar usu\u00e1rio (signUp)",
+      "_type": "request",
+      "method": "POST",
+      "url": "https://identitytoolkit.googleapis.com/v1/accounts:signUp?key={{ api_key }}",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"email\": \"admin@cardslegends.com\",\n  \"password\": \"SenhaForte123!\",\n  \"returnSecureToken\": true\n}"
+      }
+    },
+    {
+      "_id": "req_login_user",
+      "parentId": "wrk_cards_legends",
+      "name": "\ud83d\udd11 Login (signInWithPassword)",
+      "_type": "request",
+      "method": "POST",
+      "url": "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key={{ api_key }}",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"email\": \"admin@cardslegends.com\",\n  \"password\": \"SenhaForte123!\",\n  \"returnSecureToken\": true\n}"
+      }
+    },
+    {
+      "_id": "req_create_region",
+      "parentId": "wrk_cards_legends",
+      "name": "\ud83c\udf0d Criar Regi\u00e3o",
+      "_type": "request",
+      "method": "POST",
+      "url": "{{ base_url }}/regions",
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer {{ bearer_token }}"
+        },
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"fields\": {\n    \"name\": {\n      \"stringValue\": \"Sul\"\n    },\n    \"code\": {\n      \"stringValue\": \"SUL\"\n    },\n    \"iconUrl\": {\n      \"stringValue\": \"https://cdn.cardslegends.com/regions/sul.png\"\n    }\n  }\n}"
+      }
+    },
+    {
+      "_id": "req_create_league",
+      "parentId": "wrk_cards_legends",
+      "name": "\ud83c\udfc6 Criar Liga",
+      "_type": "request",
+      "method": "POST",
+      "url": "{{ base_url }}/leagues",
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer {{ bearer_token }}"
+        },
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"fields\": {\n    \"name\": {\n      \"stringValue\": \"LTA Sul\"\n    },\n    \"iconUrl\": {\n      \"stringValue\": \"https://cdn.cardslegends.com/leagues/ltasul.png\"\n    },\n    \"regionId\": {\n      \"stringValue\": \"regions/ID_DA_REGIAO\"\n    }\n  }\n}"
+      }
+    },
+    {
+      "_id": "req_create_team",
+      "parentId": "wrk_cards_legends",
+      "name": "\ud83d\udc55 Criar Time",
+      "_type": "request",
+      "method": "POST",
+      "url": "{{ base_url }}/teams",
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer {{ bearer_token }}"
+        },
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"fields\": {\n    \"name\": {\n      \"stringValue\": \"Time Tubar\\u00e3o\"\n    },\n    \"logoUrl\": {\n      \"stringValue\": \"https://cdn.cardslegends.com/teams/tubarao.png\"\n    },\n    \"leagueId\": {\n      \"stringValue\": \"leagues/ID_DA_LIGA\"\n    }\n  }\n}"
+      }
+    },
+    {
+      "_id": "req_create_player",
+      "parentId": "wrk_cards_legends",
+      "name": "\ud83c\udfae Criar Jogador",
+      "_type": "request",
+      "method": "POST",
+      "url": "{{ base_url }}/players",
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer {{ bearer_token }}"
+        },
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"fields\": {\n    \"name\": {\n      \"stringValue\": \"Brunzera\"\n    },\n    \"imageUrl\": {\n      \"stringValue\": \"https://cdn.cardslegends.com/players/brunzera.png\"\n    },\n    \"role\": {\n      \"stringValue\": \"Jungle\"\n    },\n    \"age\": {\n      \"integerValue\": 23\n    },\n    \"teamId\": {\n      \"stringValue\": \"teams/ID_DO_TIME\"\n    }\n  }\n}"
+      }
+    }
+  ]
+}
