@@ -1,0 +1,118 @@
+.cardWrapper {
+    width: 320px;
+}
+
+.card {
+    position: relative;
+    width: 320px;
+    height: 480px;
+    overflow: hidden;
+    border-radius: 16px;
+}
+
+.frameImage {
+    z-index: 9;
+    object-fit: contain;
+    height: 500px;
+    pointer-events: none;
+}
+
+.innerCard {
+    position: absolute;
+    top: 55px;
+    left: 25px;
+    right: 25px;
+    bottom: 50px;
+    border-radius: 12px;
+    overflow: hidden;
+    z-index: 2;
+    padding: 1rem;
+}
+
+.backgroundImage {
+    object-fit: cover;
+    z-index: 2;
+}
+
+.content {
+    position: relative;
+    z-index: 3;
+    height: 100%;
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: white;
+    text-align: center;
+}
+
+.averageScore {
+    position: absolute;
+    top: 20px;
+    left: 15px;
+    font-size: 2.5rem;
+    font-weight: bold;
+}
+
+.playerImage {
+    margin-top: 45px;
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid white;
+}
+
+.badges {
+    position: absolute;
+    top: 60px;
+    right: 28px;
+    display: flex;
+    flex-direction: column;
+    z-index: 4;
+}
+
+.badgeIcon {
+    max-width: 35px;
+    border-radius: 6px;
+    padding: 2px;
+    aspect-ratio: 1 / 1; /* Ensures the icon maintains a square ratio */
+    object-fit: contain; /* Ensures the content fits within the defined aspect ratio */
+}
+
+.name {
+    margin-top: 10px;
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+.role {
+    font-size: 0.9rem;
+    opacity: 0.9;
+}
+
+.stats {
+    margin: 12px 0;
+    font-size: 0.9rem;
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+}
+
+.slider {
+    width: 80%;
+}
+
+.scoreValue {
+    font-weight: bold;
+    margin-top: 5px;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+}
+
+.saveButton {
+    width: 100%;
+    justify-content: center;
+    background-color: #6c47ff;
+    transition: background-color 0.2s ease;
+    z-index: 10;
+}

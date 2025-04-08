@@ -8,6 +8,11 @@
     transition: background-color 0.3s ease;
 }
 
+.button:disabled {
+    background-color: #f3f4f6;
+    color: #9ca3af;
+    cursor: not-allowed;
+}
 .primary {
     background-color: #2563eb;
     color: white;
@@ -17,6 +22,10 @@
     background-color: #1d4ed8;
 }
 
+.primary:disabled {
+    background-color: #74879c;
+    color: white
+}
 .secondary {
     background-color: #e5e7eb;
     color: #111827;
@@ -26,6 +35,9 @@
     background-color: #d1d5db;
 }
 
+.secondary:disabled {
+    background-color: #f3f4f6;
+}
 .danger {
     background-color: #dc2626;
     color: white;
@@ -33,4 +45,7 @@
 
 .danger:hover {
     background-color: #b91c1c;
+}
+.danger:disabled {
+    background-color: #fca5a5;
 }
