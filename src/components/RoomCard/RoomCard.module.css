@@ -1,0 +1,31 @@
+.card {
+    background-color: #1f2937;
+    /* bg-zinc-800 */
+    border-radius: 1rem;
+    /* 2xl */
+    padding: 1.5rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    color: #f9fafb;
+    /* zinc-50 */
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    cursor: pointer;
+}
+
+.card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
+}
+
+.title {
+    font-size: 1.25rem;
+    /* text-lg */
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+.subtitle {
+    font-size: 0.875rem;
+    /* text-sm */
+    color: #d1d5db;
+    /* zinc-300 */
+}

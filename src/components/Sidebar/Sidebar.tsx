@@ -6,7 +6,7 @@ import { usePathname, useRouter } from 'next/navigation';
 import { clearSessionCookie } from '@/utils/cookies';
 
 const menuItems = [
-  { label: 'Sala', path: '/room' },
+  { label: 'Salas', path: '/rooms' },
   { label: 'Estatísticas', path: '/stats' },
   { label: 'Perfil', path: '/profile' },
   { label: 'Configurações', path: '/settings' },

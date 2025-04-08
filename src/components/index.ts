@@ -3,3 +3,5 @@ export { default as WelcomeMessage } from './WelcomeMessage/WelcomeMessage';
 export { default as LoremSection } from './LoremSection/LoremSection';
 export { default as Spinner } from './Spinner/Spinner';
 export { default as Link } from './Link/Link';
+export { default as RoomCard } from './RoomCard/RoomCard';
+export { default as Button } from './Button/Button';
