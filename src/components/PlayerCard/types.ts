@@ -23,6 +23,5 @@ export type Player = {
     teamName: string;
     regionIcon: string;
     nacionalityIcon: string;
-    rating: number;
     stats: [string, string];
 };

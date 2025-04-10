@@ -1,0 +1,33 @@
+/* app/(logged)/rooms/[id]/components/Header.module.css */
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 24px;
+    background-color: var(--background-secondary-color);
+    margin: 2rem 0;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.titleGroup {
+    display: flex;
+    flex-direction: column;
+}
+
+.roomName {
+    font-size: 20px;
+    font-weight: bold;
+    margin: 0;
+}
+
+.step {
+    font-size: 14px;
+    color: #555;
+}
+
+.status {
+    font-size: 14px;
+    color: #007bff;
+}

@@ -1,0 +1,84 @@
+.container {
+    padding: 1rem;
+}
+
+.title {
+    font-size: 1.25rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border: 1px solid #ccc;
+    border-radius: 12px;
+    padding: 1rem;
+    text-align: center;
+    background: var(--background-secondary-color);
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+}
+
+.card:hover {
+    border-color: #666;
+}
+
+.selected {
+    border: 2px solid #0070f3;
+}
+
+.logo {
+    width: 48px;
+    height: 48px;
+    object-fit: contain;
+    margin-bottom: 0.5rem;
+}
+
+.name {
+    font-weight: 600;
+}
+
+.round {
+    font-size: 0.85rem;
+    color: #666;
+    margin-top: 0.25rem;
+}
+
+.nextButton {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background-color: #0070f3;
+    color: white;
+    padding: 0.6rem 1rem;
+    border-radius: 8px;
+    font-size: 1rem;
+    border: none;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.nextButton:hover:not(:disabled) {
+    background-color: #005bb5;
+}
+
+.nextButton:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
+.waiting {
+    padding: 2rem;
+    text-align: center;
+    font-size: 1.1rem;
+    color: #555;
+}

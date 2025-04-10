@@ -1,0 +1,84 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.sectionTitle {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 12px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 16px;
+  align-items: center;
+}
+
+.actions {
+  margin-top: 16px;
+}
+
+.buttonGroup {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.primaryButton {
+  background-color: #2d9c4c;
+  color: white;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.primaryButton:hover {
+  background-color: #21863e;
+}
+
+.warningButton {
+  background-color: #f4b400;
+  color: white;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.warningButton:hover {
+  background-color: #d89b00;
+}
+
+.dangerButton {
+  background-color: #e53935;
+  color: white;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.dangerButton:hover {
+  background-color: #c62828;
+}
+
+.switchCard {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9999px;
+  width: 60px;
+  height: 60px;
+  background-color: var(--background-secondary-color);
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  align-self: center;
+}
+
+.switchCard:hover {
+  background-color: #ccc;
+}

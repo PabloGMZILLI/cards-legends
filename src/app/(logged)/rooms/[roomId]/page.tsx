@@ -1,154 +1,67 @@
 'use client';
 
 import { useState } from 'react';
-import styles from './RoomPage.module.css';
-import { Button, PlayerCard } from '@/components';
-import { Player } from '@/components/PlayerCard/types';
+import LobbyStep from './steps/LobbyStep';
+import Header from './components/Header';
+import { Room, RoomStep } from '@/types/RoomTypes';
+import SelectTeamStep from './steps/SelectTeamStep';
 
-type Vote = {
-    playerId: string;
-    userId: string;
-    score: number;
+const mockRoom: Room = {
+    id: 'room123',
+    currentStep: 'lobby',
+    nextStep: 'selectTeam',
+    status: 'waiting',
+    name: 'Sala dos Pro Players',
+    region: 'BR',
+    roundIds: ['round1', 'round2'],
+    players: [
+        { id: 'user1', name: 'João' },
+        { id: 'user2', name: 'Maria' },
+        { id: 'user3', name: 'Carlos' },
+    ],
+    specs: [
+        { id: 'user4', name: 'Antonio' },
+    ],
+    leaderId: 'user1',
 };
 
-const mockPlayers: Player[] = [
-    {
-        id: '1',
-        name: 'Titan',
-        role: 'ADC',
-        image: '/images/players/titan.png',
-        teamLogo: '/images/teams/pain.png',
-        nacionalityIcon: '/images/flags/br.png',
-        regionIcon: '/images/regions/lta-sul.png',
-        teamName: 'Vivo Keyd',
-        rating: 93,
-        stats: ['9/1/8', '10/3/13'],
-    },
-    {
-        id: '2',
-        name: 'Revolta',
-        role: 'Jungle',
-        image: '/images/players/revolta.png',
-        teamLogo: '/images/teams/pain.png',
-        nacionalityIcon: '/images/flags/br.png',
-        regionIcon: '/images/regions/lta-sul.png',
-        teamName: 'paiN Gaming',
-        rating: 89,
-        stats: ['3/2/11', '7/0/9'],
-    },
-    {
-        id: '3',
-        name: 'Takeshi',
-        role: 'Mid',
-        image: '/images/players/takeshi.png',
-        teamLogo: '/images/teams/pain.png',
-        nacionalityIcon: '/images/flags/br.png',
-        regionIcon: '/images/regions/lta-sul.png',
-        teamName: 'INTZ',
-        rating: 91,
-        stats: ['5/5/5', '8/1/7'],
-    },
-];
-
-const mockUserId = 'user123';
-const mockIsLeader = true;
-
 export default function RoomPage() {
-    const [currentPlayerIndex, setCurrentPlayerIndex] = useState(0);
-    const [votes, setVotes] = useState<Vote[]>([
-        { playerId: '1', userId: 'user456', score: 88 },
-        { playerId: '1', userId: 'user789', score: 92 },
-    ]);
-    const [myScore, setMyScore] = useState(50);
+    const [room, setRoom] = useState<Room>(mockRoom);
+    const [currentStep, setCurrentStep] = useState<RoomStep>('lobby');
+    const currentUserId = 'user1'; // simula o usuário logado
 
-    const currentPlayer = mockPlayers[currentPlayerIndex];
-
-    const getPlayerVotes = (playerId: string): Vote[] => {
-        return votes.filter((v) => v.playerId === playerId);
+    const updateRoom = (partial: Room) => {
+        setRoom((prev) => ({ ...prev, ...partial }));
     };
 
-    const getScoreAverage = (playerId: string): number => {
-        const playerVotes = getPlayerVotes(playerId);
-        if (playerVotes.length === 0) return 0;
-        const total = playerVotes.reduce((sum, v) => sum + v.score, 0);
-        return Math.round(total / playerVotes.length);
-    };
-
-    const handleVoteChange = (value: number) => {
-        setMyScore(value);
-    };
-
-    const handleSaveVote = () => {
-        setVotes((prev) => {
-            const filtered = prev.filter(
-                (v) => !(v.playerId === currentPlayer.id && v.userId === mockUserId)
-            );
-            return [
-                ...filtered,
-                { playerId: currentPlayer.id, userId: mockUserId, score: myScore },
-            ];
-        });
-    };
-
-    const hasEveryoneVoted = () => {
-        return getPlayerVotes(currentPlayer.id).length >= 3;
-    };
-
-    const goToNextPlayer = () => {
-        if (currentPlayerIndex < mockPlayers.length - 1) {
-            const nextIndex = currentPlayerIndex + 1;
-            setCurrentPlayerIndex(nextIndex);
-
-            const existingVote = votes.find(
-                (v) =>
-                    v.playerId === mockPlayers[nextIndex].id &&
-                    v.userId === mockUserId
-            );
-            setMyScore(existingVote?.score || 50);
-        } else {
-            alert('Fim das votações!');
-        }
-    };
-
-    const alreadyVoted = votes.some(
-        (v) => v.playerId === currentPlayer.id && v.userId === mockUserId
-    );
-
-    const renderVotesForPlayer = (playerId: string) => {
-        const playerVotes = getPlayerVotes(playerId);
-        return playerVotes.map((vote) => (
-            <p key={`${vote.userId}-${vote.playerId}`}>
-                🗳️ <strong>{vote.userId}</strong> votou: <strong>{vote.score}</strong>
-            </p>
-        ));
-    };
-
+    console.log('currentStep: ', currentStep)
     return (
-        <div className={styles.container}>
-            <h1 className={styles.roomTitle}>Sala: Final LTA</h1>
-
-            <PlayerCard
-                player={currentPlayer}
-                score={myScore}
-                onScoreChange={handleVoteChange}
-                onSave={handleSaveVote}
-                voted={alreadyVoted}
-                averageScore={getScoreAverage(currentPlayer.id)}
+        <div>
+            <Header
+                roomName={room.name}
+                step={currentStep}
+                status="Aguardando jogadores"
             />
 
-            <p className={styles.voteStatus}>
-                Votos recebidos: {getPlayerVotes(currentPlayer.id).length} / 3
-            </p>
 
-            <div className={styles.voteList}>
-                {renderVotesForPlayer(currentPlayer.id)}
-            </div>
-
-            {mockIsLeader && (
-                <Button onClick={goToNextPlayer} disabled={!hasEveryoneVoted()}>
-                    Próximo jogador
-                </Button>
+            {currentStep === 'lobby' && (
+                <LobbyStep
+                    room={room}
+                    currentUserId={currentUserId}
+                    onUpdateRoom={updateRoom}
+                    handleStartRoom={(step: RoomStep) => setCurrentStep(step || currentStep)}
+                />
             )}
+
+            {currentStep === 'selectTeam' && (
+                <SelectTeamStep
+                    room={room}
+                    currentUserId={currentUserId}
+                    onHandleNext={() => { }}
+                />
+            )}
+
+            {/* outros steps no futuro... */}
         </div>
     );
 }

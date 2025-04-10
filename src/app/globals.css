@@ -6,6 +6,21 @@
 body {
   @apply bg-gray-900 text-white;
 }
+
 h1 {
   @apply text-3xl font-bold;
+}
+label {
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+  color: white;
+}
+
+:root {
+  --color-primary: #1e40af;
+  --color-secondary: #64748b;
+  --color-danger: #dc2626;
+  --background-secondary-color: #1e1e2f;
+  --border-radius: 12px;
+  --transition: all 0.2s ease-in-out;
 }

@@ -3,11 +3,13 @@
 import { useEffect, useState } from 'react';
 import { Button, RoomCard } from '@/components';
 import { RoomCardProps } from '@/components/RoomCard/types';
+import { useRouter } from 'next/navigation';
 
 import styles from './RoomsPage.module.css';
 
 export default function RoomsPage() {
     const [rooms, setRooms] = useState<RoomCardProps[]>([]);
+    const router = useRouter();
 
     useEffect(() => {
         // Aqui futuramente será integrado com o Firestore
@@ -21,7 +23,7 @@ export default function RoomsPage() {
     return (
         <div className={styles.container}>
             <div className={styles.containerTools}>
-                <Button onClick={() => alert('Criar nova sala')}>Criar Nova Sala</Button>
+                <Button onClick={() => router.push('/rooms/create')}>Criar Nova Sala</Button>
             </div>
             <h1 className={styles.title}>Salas Disponíveis</h1>
             <div className={styles.roomsGrid}>

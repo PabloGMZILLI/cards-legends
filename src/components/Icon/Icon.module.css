@@ -1,0 +1,15 @@
+.iconWrapper {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.icon {
+    color: #333;
+    transition: color 0.2s;
+}
+
+.iconWithAction:hover .icon {
+    color: #000;
+}
