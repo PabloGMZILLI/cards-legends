@@ -11,7 +11,7 @@ export const setSessionCookie = async (token: string) => {
         path: '/',
         sameSite: 'strict',
         secure: process.env.NODE_ENV === 'production',
-        maxAge: 60 * 60 * 24 * 7, // 7 days
+        maxAge: 7200, // 2 horas
     });
 };
 

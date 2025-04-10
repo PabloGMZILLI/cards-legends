@@ -1,23 +1,24 @@
 'use client';
 
-import { LobbyStepProps, RoomKeys, RoomUser } from '@/types/RoomTypes';
+import { LobbyStepProps, RoomKeys } from '@/types/RoomTypes';
 import styles from '../styles/LobbyStep.module.css';
 
 import { Icon } from '@/components';
 import PlayerRoomCard from '../components/PlayerRoomCard';
+import { User } from 'firebase/auth';
 
 export default function LobbyStep({
   room,
   currentUserId,
   onUpdateRoom,
-  handleStartRoom,
+  nextStep,
 }: LobbyStepProps) {
   const isLeader = room.leaderId === currentUserId;
 
   const handleKickPlayer = (id: string, type: RoomKeys) => {
-    const users = room[type] as RoomUser[];
+    const users = room[type] as User[];
 
-    const filtered = users.filter(user => user.id !== id);
+    const filtered = users.filter(user => user.uid !== id);
     onUpdateRoom({ ...room, [type]: filtered });
   };
 
@@ -26,26 +27,26 @@ export default function LobbyStep({
   };
 
   const handleSwitchToParticipant = () => {
-    const updatedSpecs = room.specs.filter(s => s.id !== currentUserId);
-    const newPlayer = room.specs.find(s => s.id === currentUserId);
+    const updatedSpecs = room.specs.filter(s => s.uid !== currentUserId);
+    const newPlayer = room.specs.find(s => s.uid === currentUserId);
 
     if (newPlayer) {
       onUpdateRoom({
         ...room,
         specs: updatedSpecs,
-        players: [...room.players, newPlayer],
+        users: [...room.users, newPlayer],
       });
     }
   };
 
   const handleSwitchToSpec = () => {
-    const updatedPlayers = room.players.filter(p => p.id !== currentUserId);
-    const newSpec = room.players.find(p => p.id === currentUserId);
+    const updatedPlayers = room.users.filter(p => p.uid !== currentUserId);
+    const newSpec = room.users.find(p => p.uid === currentUserId);
 
     if (newSpec) {
       onUpdateRoom({
         ...room,
-        players: updatedPlayers,
+        users: updatedPlayers,
         specs: [...room.specs, newSpec],
       });
     }
@@ -56,20 +57,20 @@ export default function LobbyStep({
       <section>
         <h2 className={styles.sectionTitle}>Avaliadores</h2>
         <div className={styles.grid}>
-          {room.players.map((p) => {
-            const isTheLeader = p.id === room.leaderId;
-            const isMe = p.id === currentUserId;
+          {room.users.map((p) => {
+            const isTheLeader = p.uid === room.leaderId;
+            const isMe = p.uid === currentUserId;
 
             return (
-              <PlayerRoomCard
-                key={p.id}
-                id={p.id}
-                name={p.name}
+              p.uid && p.displayName && <PlayerRoomCard
+                key={p.uid}
+                id={p.uid}
+                name={p.displayName}
                 type="participant"
                 isMe={isMe}
                 isLeader={isTheLeader}
-                onKick={() => handleKickPlayer(p.id, 'players')}
-                onTransferLeadership={() => handleTransferLeadership(p.id)}
+                onKick={() => handleKickPlayer(p.uid as string, 'users')}
+                onTransferLeadership={() => handleTransferLeadership(p.uid as string)}
                 loggedUserIsLeader={isLeader}
               />
             );
@@ -83,19 +84,19 @@ export default function LobbyStep({
         <h2 className={styles.sectionTitle}>Espectadores</h2>
         <div className={styles.grid}>
           {room.specs.map((s) => {
-            const isMe = s.id === currentUserId;
-            const isTheLeader = s.id === room.leaderId;
+            const isMe = s.uid === currentUserId;
+            const isTheLeader = s.uid === room.leaderId;
 
             return (
-              <PlayerRoomCard
-                key={s.id}
-                id={s.id}
-                name={s.name}
+              s.uid && s.displayName && <PlayerRoomCard
+                key={s.uid}
+                id={s.uid}
+                name={s.displayName}
                 type="spec"
                 isMe={isMe}
                 isLeader={isTheLeader}
-                onKick={() => handleKickPlayer(s.id, 'specs')}
-                onTransferLeadership={() => handleTransferLeadership(s.id)}
+                onKick={() => handleKickPlayer(s.uid as string, 'specs')}
+                onTransferLeadership={() => handleTransferLeadership(s.uid as string)}
                 loggedUserIsLeader={isLeader}
               />
             );
@@ -110,7 +111,7 @@ export default function LobbyStep({
           <div className={styles.buttonGroup}>
             <button className={styles.dangerButton}>Fechar Sala</button>
             <button
-              onClick={() => handleStartRoom('selectTeam')}
+              onClick={nextStep}
               className={styles.primaryButton}
             >
               Iniciar

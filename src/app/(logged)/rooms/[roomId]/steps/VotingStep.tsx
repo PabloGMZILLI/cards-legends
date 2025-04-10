@@ -4,35 +4,25 @@ import { useState } from 'react';
 import { Button, EditPlayerCard } from '@/components';
 
 import styles from '../styles/VotingStep.module.css';
-import { mockPlayers, mockVotes } from '@/mocks';
+import { mockVotes, mockUser } from '@/mocks';
+import { RoomVote, VotingStepProps } from '@/types/RoomTypes';
+import { TeamPlayer, TeamType } from '@/types/Team';
 
-type PlatformUser = {
-    id: string;
-    name: string;
-}
-
-export type Vote = {
-    user: PlatformUser;
-    playerId: string;
-    score: number;
-};
 
 const mockIsLeader = true;
 
-const mockCurrentUser = {
-    id: '123',
-    name: 'Pablo',
-}
-
-export default function VotingStep() {
-    const [currentPlayerIndex, setCurrentPlayerIndex] = useState(0);
-    const [votes, setVotes] = useState<Vote[]>(mockVotes);
+export default function VotingStep({
+    room,
+    currentUserId,
+    nextStep,
+    onUpdateRoom
+}: VotingStepProps) {
+    const [votes, setVotes] = useState<RoomVote[]>(mockVotes);
     const [myScore, setMyScore] = useState(50);
-    const currentUserId = mockCurrentUser.id;
 
-    const currentPlayer = mockPlayers[currentPlayerIndex];
+    const currentPlayerId = room.selectedPlayer?.id || '';
 
-    const getPlayerVotes = (playerId: string): Vote[] => {
+    const getPlayerVotes = (playerId: string): RoomVote[] => {
         return votes.filter((v) => v.playerId === playerId);
     };
 
@@ -50,44 +40,37 @@ export default function VotingStep() {
     const handleSaveVote = () => {
         setVotes((prev) => {
             const filtered = prev.filter(
-                (v) => !(v.playerId === currentPlayer.id && v.user.id === currentUserId)
+                (v) => !(v.playerId === currentPlayerId && v.user.uid === currentUserId)
             );
             return [
                 ...filtered,
-                { playerId: currentPlayer.id, user: mockCurrentUser, score: myScore },
+                {
+                    playerId: currentPlayerId,
+                    user: mockUser,
+                    score: myScore,
+                    roundId: room.id,
+                    roomId: room.id,
+                    roundIds: room.roundIds,
+                    team: room.selectedPlayer?.team as TeamType,
+                },
             ];
         });
+        onUpdateRoom(room)
     };
 
     const hasEveryoneVoted = () => {
-        return getPlayerVotes(currentPlayer.id).length >= 3;
-    };
-
-    const goToNextPlayer = () => {
-        if (currentPlayerIndex < mockPlayers.length - 1) {
-            const nextIndex = currentPlayerIndex + 1;
-            setCurrentPlayerIndex(nextIndex);
-
-            const existingVote = votes.find(
-                (v) =>
-                    v.playerId === mockPlayers[nextIndex].id &&
-                    v.user.id === currentUserId
-            );
-            setMyScore(existingVote?.score || 50);
-        } else {
-            alert('Fim das votações!');
-        }
+        return getPlayerVotes(currentPlayerId || '').length >= 3;
     };
 
     const alreadyVoted = votes.some(
-        (v) => v.playerId === currentPlayer.id && v.user.id === currentUserId
+        (v) => v.playerId === currentPlayerId && v.user.uid === currentUserId
     );
 
     const renderVotesForPlayer = (playerId: string) => {
         const playerVotes = getPlayerVotes(playerId);
         return playerVotes.map((vote) => (
-            <p key={`${vote.user.id}-${vote.playerId}`}>
-                🗳️ <strong>{vote.user.name}</strong> votou.
+            <p key={`${vote.user.uid}-${vote.playerId}`}>
+                🗳️ <strong>{vote.user.displayName}</strong> votou.
             </p>
         ));
     };
@@ -96,24 +79,24 @@ export default function VotingStep() {
         <div className={styles.container}>
             <div className={styles.votingSection}>
                 <EditPlayerCard
-                    player={currentPlayer}
+                    player={room.selectedPlayer as TeamPlayer}
                     score={myScore}
                     onScoreChange={handleVoteChange}
                     onSave={handleSaveVote}
                     voted={alreadyVoted}
-                    averageScore={getScoreAverage(currentPlayer.id)}
+                    averageScore={getScoreAverage(currentPlayerId)}
                 />
             </div>
             <p className={styles.voteStatus}>
-                Votos recebidos: {getPlayerVotes(currentPlayer.id).length} / 3
+                Votos recebidos: {getPlayerVotes(currentPlayerId).length} / 3
             </p>
 
             <div className={styles.voteList}>
-                {renderVotesForPlayer(currentPlayer.id)}
+                {renderVotesForPlayer(currentPlayerId)}
             </div>
 
             {mockIsLeader && (
-                <Button onClick={goToNextPlayer} disabled={!hasEveryoneVoted()}>
+                <Button onClick={nextStep} disabled={!hasEveryoneVoted()}>
                     Próximo
                 </Button>
             )}

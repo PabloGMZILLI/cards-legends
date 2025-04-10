@@ -6,13 +6,14 @@ export type TeamType = {
     players: TeamPlayer[];
 };
 
+export type TeamPlayerRole = 'Top' | 'Jungle' | 'Mid' | 'ADC' | 'Support';
+
 export type TeamPlayer = {
     id: string
     name: string;
-    role: string;
+    role: TeamPlayerRole;
     image: string;
-    teamLogo: string;
-    teamName: string;
+    team: TeamType
     regionIcon: string;
     nacionalityIcon: string;
     stats: [string, string];

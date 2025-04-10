@@ -44,7 +44,7 @@ export default function PlayerCard({
 
                     <div className={styles.badges}>
                         <Image
-                            src={player.teamLogo}
+                            src={player?.team?.logoUrl}
                             alt="Time"
                             width={32}
                             height={32}

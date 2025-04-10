@@ -1,38 +1,44 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import LobbyStep from './steps/LobbyStep';
 import Header from './components/Header';
-import { Room, RoomStep } from '@/types/RoomTypes';
+import { Room, RoomStatus, RoomStep } from '@/types/RoomTypes';
 import SelectTeamStep from './steps/SelectTeamStep';
 import VotingStep from './steps/VotingStep';
-
-const mockRoom: Room = {
-    id: 'room123',
-    currentStep: 'lobby',
-    nextStep: 'selectTeam',
-    status: 'waiting',
-    name: 'Sala dos Pro Players',
-    region: 'BR',
-    roundIds: ['round1', 'round2'],
-    players: [
-        { id: 'user1', name: 'João' },
-        { id: 'user2', name: 'Maria' },
-        { id: 'user3', name: 'Carlos' },
-    ],
-    specs: [
-        { id: 'user4', name: 'Antonio' },
-    ],
-    leaderId: 'user1',
-};
+import { mockRoom } from '@/mocks';
+import SelectPlayersStep from './steps/SelectPlayersStep';
+import { useAuth } from '@/context/AuthContext';
+import { Spinner } from '@/components';
 
 export default function RoomPage() {
     const [room, setRoom] = useState<Room>(mockRoom);
     const [currentStep, setCurrentStep] = useState<RoomStep>('lobby');
-    const currentUserId = 'user1'; // simula o usuário logado
+    const { user, loading } = useAuth();
+
+    useEffect(() => {
+        console.log('user: ', user)
+        if (user) {
+            setRoom((prev) => {
+                const alreadyIn = prev.users.find((u) => u.uid === user.uid);
+                if (alreadyIn) {
+                    return prev;
+                }
+                return ({ ...prev, users: [...prev.users, user], leaderId: user.uid })
+            });
+        }
+    }, [user]);
+
+    if (!user || loading) {
+        return <Spinner />;
+    }
+
+    const currentUserId = user?.uid;
 
     const updateRoom = (partial: Room) => {
-        setRoom((prev) => ({ ...prev, ...partial }));
+        const status: RoomStatus = currentStep !== 'lobby' ? 'inProgress' : 'waiting'; // @TODO: Add the last status
+
+        setRoom((prev) => ({ ...prev, ...partial, status }));
     };
 
     return (
@@ -42,30 +48,35 @@ export default function RoomPage() {
                 step={currentStep}
                 status={room.status}
             />
-
-
             {currentStep === 'lobby' && (
                 <LobbyStep
                     room={room}
                     currentUserId={currentUserId}
                     onUpdateRoom={updateRoom}
-                    handleStartRoom={(step: RoomStep) => setCurrentStep(step || currentStep)}
+                    nextStep={() => setCurrentStep('selectTeam')}
                 />
             )}
-
             {currentStep === 'selectTeam' && (
                 <SelectTeamStep
                     room={room}
                     currentUserId={currentUserId}
-                    onHandleNext={(step: RoomStep) => setCurrentStep(step || currentStep)}
+                    nextStep={() => setCurrentStep('selectPlayer')}
                 />
             )}
-
+            {currentStep === 'selectPlayer' && (
+                <SelectPlayersStep
+                    room={room}
+                    currentUserId={currentUserId}
+                    nextStep={() => setCurrentStep('voting')}
+                    onUpdateRoom={updateRoom}
+                />
+            )}
             {currentStep === 'voting' && (
                 <VotingStep
-                // room={room}
-                // currentUserId={currentUserId}
-                // onHandleNext={() => { }}
+                    room={room}
+                    currentUserId={currentUserId}
+                    nextStep={() => setCurrentStep('selectPlayer')}
+                    onUpdateRoom={updateRoom}
                 />
             )}
 

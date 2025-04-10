@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { Room, RoomStep } from '@/types/RoomTypes';
+import { Room } from '@/types/RoomTypes';
 import { Icon } from '@/components';
 import Image from 'next/image';
 
@@ -11,14 +11,13 @@ import { mockTeams } from '@/mocks';
 type SelectTeamStepProps = {
     room: Room;
     currentUserId: string;
-    // onHandleNext: (teamId: string) => void;
-    onHandleNext: (step: RoomStep) => void;
+    nextStep: () => void;
 };
 
 export default function SelectTeamStep({
     room,
     currentUserId,
-    onHandleNext,
+    nextStep,
 }: SelectTeamStepProps) {
     const isLeader = room.leaderId === currentUserId;
     const teams = mockTeams;
@@ -55,7 +54,7 @@ export default function SelectTeamStep({
             <button
                 className={styles.nextButton}
                 disabled={!selectedTeamId}
-                onClick={() => onHandleNext('voting')}
+                onClick={nextStep}
             >
                 Próximo <Icon name="arrowRight" size={16} />
             </button>

@@ -1,39 +1,44 @@
 'use client';
 
 import { createContext, useContext, useEffect, useState } from 'react';
-import { getSessionCookie } from '@/utils/cookies'; // Assuming this reads and verifies token
+import { onAuthStateChanged, User } from 'firebase/auth';
+import { auth } from '@/services/firebase';
 
 type AuthContextType = {
   isLoggedIn: boolean;
   loading: boolean;
+  user: User | null;
 };
 
 const AuthContext = createContext<AuthContextType>({
   isLoggedIn: false,
   loading: true,
+  user: null
 });
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [user, setUser] = useState<User | null>(null);
+
 
   useEffect(() => {
-    const checkSession = async () => {
-      try {
-        const token = await getSessionCookie();
-        setIsLoggedIn(!!token); // You could verify it further with Firebase if needed
-      } catch {
+    const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
+      if (firebaseUser) {
+        setIsLoggedIn(true);
+        setUser(firebaseUser);
+      } else {
         setIsLoggedIn(false);
-      } finally {
-        setLoading(false);
+        setUser(null);
       }
-    };
+      setLoading(false);
+    });
 
-    checkSession();
+    return () => unsubscribe(); // limpa listener
   }, []);
 
   return (
-    <AuthContext.Provider value={{ isLoggedIn, loading }}>
+    <AuthContext.Provider value={{ isLoggedIn, loading, user }}>
       {children}
     </AuthContext.Provider>
   );

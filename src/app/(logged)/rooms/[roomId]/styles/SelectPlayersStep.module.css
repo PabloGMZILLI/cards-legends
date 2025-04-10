@@ -1,0 +1,90 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2rem;
+  text-align: center;
+}
+
+.title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 2rem;
+  color: #ffffff;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 1.5rem;
+  width: 100%;
+  max-width: 800px;
+  margin-bottom: 2rem;
+}
+
+.card {
+  background-color: #1f1f1f;
+  border: 2px solid transparent;
+  border-radius: 1rem;
+  padding: 1rem;
+  cursor: pointer;
+  transition: 0.2s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.card:hover {
+  border-color: #444;
+}
+
+.selected {
+  border-color: #4ade80;
+  box-shadow: 0 0 0 3px rgba(74, 222, 128, 0.4);
+}
+
+.avatar {
+  border-radius: 9999px;
+  object-fit: cover;
+  margin-bottom: 0.5rem;
+}
+
+.name {
+  font-size: 1rem;
+  font-weight: 500;
+  color: #ffffff;
+}
+
+.role {
+  font-size: 0.875rem;
+  color: #aaaaaa;
+}
+
+.nextButton {
+  background-color: #4ade80;
+  color: #1f1f1f;
+  font-weight: 600;
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.5rem;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.nextButton:disabled {
+  background-color: #2f2f2f;
+  color: #888;
+  cursor: not-allowed;
+}
+
+.waitingContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 300px;
+}
+
+.waitingText {
+  font-size: 1.125rem;
+  color: #cccccc;
+}
