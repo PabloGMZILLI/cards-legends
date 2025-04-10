@@ -29,18 +29,3 @@ export interface LobbyStepProps {
   handleStartRoom: (step: RoomStep) => void;
 }
 
-export type TeamType = {
-  id: string;
-  name: string;
-  logoUrl: string;
-  region: string;
-  players: TeamPlayer[];
-};
-
-export type TeamPlayer = {
-  id: string;
-  name: string;
-  imageUrl: string;
-  position: string;
-  age: number;
-};

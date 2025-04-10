@@ -5,6 +5,7 @@ import LobbyStep from './steps/LobbyStep';
 import Header from './components/Header';
 import { Room, RoomStep } from '@/types/RoomTypes';
 import SelectTeamStep from './steps/SelectTeamStep';
+import VotingStep from './steps/VotingStep';
 
 const mockRoom: Room = {
     id: 'room123',
@@ -34,13 +35,12 @@ export default function RoomPage() {
         setRoom((prev) => ({ ...prev, ...partial }));
     };
 
-    console.log('currentStep: ', currentStep)
     return (
         <div>
             <Header
                 roomName={room.name}
                 step={currentStep}
-                status="Aguardando jogadores"
+                status={room.status}
             />
 
 
@@ -57,11 +57,18 @@ export default function RoomPage() {
                 <SelectTeamStep
                     room={room}
                     currentUserId={currentUserId}
-                    onHandleNext={() => { }}
+                    onHandleNext={(step: RoomStep) => setCurrentStep(step || currentStep)}
                 />
             )}
 
-            {/* outros steps no futuro... */}
+            {currentStep === 'voting' && (
+                <VotingStep
+                // room={room}
+                // currentUserId={currentUserId}
+                // onHandleNext={() => { }}
+                />
+            )}
+
         </div>
     );
 }

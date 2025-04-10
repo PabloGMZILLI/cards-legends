@@ -1,7 +1,7 @@
 'use client';
 
 import Image from 'next/image';
-import styles from './PlayerCard.module.css';
+import styles from './EditPlayerCard.module.css';
 import { PlayerCardProps } from './types';
 import Button from '../Button/Button';
 

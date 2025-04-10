@@ -1,62 +1,34 @@
 'use client';
 
 import { useState } from 'react';
-import styles from './RoomPage.module.css';
-import { Button, PlayerCard } from '@/components';
-import { Player } from '@/components/PlayerCard/types';
+import { Button, EditPlayerCard } from '@/components';
 
-type Vote = {
+import styles from '../styles/VotingStep.module.css';
+import { mockPlayers, mockVotes } from '@/mocks';
+
+type PlatformUser = {
+    id: string;
+    name: string;
+}
+
+export type Vote = {
+    user: PlatformUser;
     playerId: string;
-    userId: string;
     score: number;
 };
 
-const mockPlayers: Player[] = [
-    {
-        id: '1',
-        name: 'Titan',
-        role: 'ADC',
-        image: '/images/players/titan.png',
-        teamLogo: '/images/teams/pain.png',
-        nacionalityIcon: '/images/flags/br.png',
-        regionIcon: '/images/regions/lta-sul.png',
-        teamName: 'Pain',
-        stats: ['9/1/8', '10/3/13'],
-    },
-    {
-        id: '2',
-        name: 'Revolta',
-        role: 'Jungle',
-        image: '/images/players/revolta.png',
-        teamLogo: '/images/teams/pain.png',
-        nacionalityIcon: '/images/flags/br.png',
-        regionIcon: '/images/regions/lta-sul.png',
-        teamName: 'paiN Gaming',
-        stats: ['3/2/11', '7/0/9'],
-    },
-    {
-        id: '3',
-        name: 'Takeshi',
-        role: 'Mid',
-        image: '/images/players/takeshi.png',
-        teamLogo: '/images/teams/pain.png',
-        nacionalityIcon: '/images/flags/br.png',
-        regionIcon: '/images/regions/lta-sul.png',
-        teamName: 'INTZ',
-        stats: ['5/5/5', '8/1/7'],
-    },
-];
-
-const mockUserId = 'user123';
 const mockIsLeader = true;
 
-export default function RoomPage() {
+const mockCurrentUser = {
+    id: '123',
+    name: 'Pablo',
+}
+
+export default function VotingStep() {
     const [currentPlayerIndex, setCurrentPlayerIndex] = useState(0);
-    const [votes, setVotes] = useState<Vote[]>([
-        { playerId: '1', userId: 'user456', score: 88 },
-        { playerId: '1', userId: 'user789', score: 92 },
-    ]);
+    const [votes, setVotes] = useState<Vote[]>(mockVotes);
     const [myScore, setMyScore] = useState(50);
+    const currentUserId = mockCurrentUser.id;
 
     const currentPlayer = mockPlayers[currentPlayerIndex];
 
@@ -78,11 +50,11 @@ export default function RoomPage() {
     const handleSaveVote = () => {
         setVotes((prev) => {
             const filtered = prev.filter(
-                (v) => !(v.playerId === currentPlayer.id && v.userId === mockUserId)
+                (v) => !(v.playerId === currentPlayer.id && v.user.id === currentUserId)
             );
             return [
                 ...filtered,
-                { playerId: currentPlayer.id, userId: mockUserId, score: myScore },
+                { playerId: currentPlayer.id, user: mockCurrentUser, score: myScore },
             ];
         });
     };
@@ -99,7 +71,7 @@ export default function RoomPage() {
             const existingVote = votes.find(
                 (v) =>
                     v.playerId === mockPlayers[nextIndex].id &&
-                    v.userId === mockUserId
+                    v.user.id === currentUserId
             );
             setMyScore(existingVote?.score || 50);
         } else {
@@ -108,31 +80,30 @@ export default function RoomPage() {
     };
 
     const alreadyVoted = votes.some(
-        (v) => v.playerId === currentPlayer.id && v.userId === mockUserId
+        (v) => v.playerId === currentPlayer.id && v.user.id === currentUserId
     );
 
     const renderVotesForPlayer = (playerId: string) => {
         const playerVotes = getPlayerVotes(playerId);
         return playerVotes.map((vote) => (
-            <p key={`${vote.userId}-${vote.playerId}`}>
-                🗳️ <strong>{vote.userId}</strong> votou: <strong>{vote.score}</strong>
+            <p key={`${vote.user.id}-${vote.playerId}`}>
+                🗳️ <strong>{vote.user.name}</strong> votou.
             </p>
         ));
     };
 
     return (
         <div className={styles.container}>
-            <h1 className={styles.roomTitle}>Sala: Final LTA</h1>
-
-            <PlayerCard
-                player={currentPlayer}
-                score={myScore}
-                onScoreChange={handleVoteChange}
-                onSave={handleSaveVote}
-                voted={alreadyVoted}
-                averageScore={getScoreAverage(currentPlayer.id)}
-            />
-
+            <div className={styles.votingSection}>
+                <EditPlayerCard
+                    player={currentPlayer}
+                    score={myScore}
+                    onScoreChange={handleVoteChange}
+                    onSave={handleSaveVote}
+                    voted={alreadyVoted}
+                    averageScore={getScoreAverage(currentPlayer.id)}
+                />
+            </div>
             <p className={styles.voteStatus}>
                 Votos recebidos: {getPlayerVotes(currentPlayer.id).length} / 3
             </p>
@@ -143,7 +114,7 @@ export default function RoomPage() {
 
             {mockIsLeader && (
                 <Button onClick={goToNextPlayer} disabled={!hasEveryoneVoted()}>
-                    Próximo jogador
+                    Próximo
                 </Button>
             )}
         </div>

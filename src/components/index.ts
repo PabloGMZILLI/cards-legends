@@ -5,7 +5,7 @@ export { default as Spinner } from './Spinner/Spinner';
 export { default as Link } from './Link/Link';
 export { default as RoomCard } from './RoomCard/RoomCard';
 export { default as Button } from './Button/Button';
-export { default as PlayerCard } from './PlayerCard/PlayerCard';
+export { default as EditPlayerCard } from './EditPlayerCard/EditPlayerCard';
 export { default as Input } from './Input/Input';
 export { default as Select } from './Select/Select';
 export { default as Icon } from './Icon/Icon';
