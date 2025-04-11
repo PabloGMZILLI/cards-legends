@@ -42,88 +42,91 @@ export const mockUser4 = { ...mockUser, uid: '654', displayName: 'Esa' };
 
 export const mockTeams: TeamType[] = [
     {
-        id: 'team1',
+        id: '7wkJpClJjyGPOEnecxDM',
         name: 'Pain',
         logoUrl: '/images/teams/pain.png',
         region: 'lta-sul',
-        players: [],
     },
     {
         id: 'team2',
         name: 'Fire Wolves',
         logoUrl: '/images/teams/pain.png',
         region: 'lta-sul',
-        players: [],
     },
 ];
 
+export const mockRegion = {
+    id: 'lta-sul',
+    name: 'LTA Sul',
+    icon: '/images/regions/lta-sul.png',
+}
+
+export const mockNacionality = {
+    id: 'br',
+    name: 'Brazil',
+    icon: '/images/flags/br.png',
+};
+
 export const mockPlayers: TeamPlayer[] = [
     {
-        id: '1',
+        uid: '1',
         name: 'Titan',
         role: 'ADC',
         image: '/images/players/titan.png',
         team: mockTeams[0],
-        nacionalityIcon: '/images/flags/br.png',
-        regionIcon: '/images/regions/lta-sul.png',
-        stats: ['9/1/8', '10/3/13'],
+        nacionality: mockNacionality,
+        region: mockRegion,
     },
     {
-        id: '2',
+        uid: '2',
         name: 'Revolta',
         role: 'Jungle',
         image: '/images/players/revolta.png',
         team: mockTeams[0],
-        nacionalityIcon: '/images/flags/br.png',
-        regionIcon: '/images/regions/lta-sul.png',
-        stats: ['3/2/11', '7/0/9'],
+        nacionality: mockNacionality,
+        region: mockRegion,
     },
     {
-        id: '3',
+        uid: '3',
         name: 'Takeshi',
         role: 'Mid',
         image: '/images/players/takeshi.png',
         team: mockTeams[0],
-        nacionalityIcon: '/images/flags/br.png',
-        regionIcon: '/images/regions/lta-sul.png',
-        stats: ['5/5/5', '8/1/7'],
+        nacionality: mockNacionality,
+        region: mockRegion,
     },
     {
-        id: '4',
+        uid: '4',
         name: 'Robo',
         role: 'Mid',
         image: '/images/players/robo.png',
         team: mockTeams[0],
-        nacionalityIcon: '/images/flags/br.png',
-        regionIcon: '/images/regions/lta-sul.png',
-        stats: ['5/5/5', '8/1/7'],
+        nacionality: mockNacionality,
+        region: mockRegion,
     },
 ];
 
-mockTeams[0].players = mockPlayers;
-mockTeams[1].players = mockPlayers;
-
 export const mockVotes: RoomVote[] = [
     {
-        user: mockUser, playerId: mockPlayers[0].id, score: 80,
+        user: mockUser, teamPlayer: mockPlayers[0], score: 80,
         roundIds: ["1", "2"],
         team: mockTeams[0],
         roomId: "123"
     },
     {
-        user: mockUser, playerId: mockPlayers[0].id, score: 60,
+        user: mockUser, teamPlayer: mockPlayers[0], score: 60,
         roundIds: ["1", "2"],
         team: mockTeams[0],
         roomId: "12"
     },
     {
-        user: mockUser, playerId: mockPlayers[0].id, score: 70,
+        user: mockUser, teamPlayer: mockPlayers[0], score: 70,
         roundIds: ["1", "2"],
         team: mockTeams[0],
         roomId: "123"
     },
     {
-        user: mockUser, playerId: mockPlayers[0].id, score: 60,
+        user: mockUser, teamPlayer: mockPlayers[0], score: 60,
         roundIds: ["1", "2"],
         team: mockTeams[0],
         roomId: "123"
@@ -131,13 +134,13 @@ export const mockVotes: RoomVote[] = [
 ]
 
 export const mockRoom: Room = {
-    id: 'room123',
+    uid: 'room123',
     currentStep: 'lobby',
     nextStep: 'selectTeam',
     status: 'waiting',
     name: 'Sala dos Pro Players',
     region: 'BR',
-    roundIds: ['round1', 'round2'],
+    roundIds: ['1', '2'],
     users: [
         mockUser2,
         mockUser3,

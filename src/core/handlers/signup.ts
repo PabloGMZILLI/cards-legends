@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
-import { auth } from '@/services/firebase';
+import { auth } from '@/lib/firebase';
 
 export async function signupHandler(req: NextRequest): Promise<NextResponse> {
   try {

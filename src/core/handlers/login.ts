@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { signInWithEmailAndPassword, updateProfile } from 'firebase/auth';
-import { auth } from '@/services/firebase';
+import { auth } from '@/lib/firebase';
 import { setSessionCookie } from '@/utils/cookies';
 
 export async function atualizarDisplayName(name: string) {

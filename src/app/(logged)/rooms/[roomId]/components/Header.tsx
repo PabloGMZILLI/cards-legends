@@ -30,7 +30,6 @@ const getStatusLabel = (status: RoomStatus) => {
 }
 
 export default function Header({ roomName, step, status }: HeaderProps) {
-  console.log('Status:', status);
   return (
     <header className={styles.header}>
       <div className={styles.titleGroup}>

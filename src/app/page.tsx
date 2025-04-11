@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { onAuthStateChanged } from 'firebase/auth';
 import { useRouter } from 'next/navigation';
 
-import { auth } from '@/services/firebase';
+import { auth } from '@/lib/firebase';
 import GuestHome from './home/guestHome/GuestHome';
 import { Spinner } from '@/components';
 

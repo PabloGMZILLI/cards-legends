@@ -17,7 +17,6 @@ export default function RoomPage() {
     const { user, loading } = useAuth();
 
     useEffect(() => {
-        console.log('user: ', user)
         if (user) {
             setRoom((prev) => {
                 const alreadyIn = prev.users.find((u) => u.uid === user.uid);
@@ -32,8 +31,6 @@ export default function RoomPage() {
     if (!user || loading) {
         return <Spinner />;
     }
-
-    const currentUserId = user?.uid;
 
     const updateRoom = (partial: Room) => {
         const status: RoomStatus = currentStep !== 'lobby' ? 'inProgress' : 'waiting'; // @TODO: Add the last status
@@ -51,7 +48,6 @@ export default function RoomPage() {
             {currentStep === 'lobby' && (
                 <LobbyStep
                     room={room}
-                    currentUserId={currentUserId}
                     onUpdateRoom={updateRoom}
                     nextStep={() => setCurrentStep('selectTeam')}
                 />
@@ -59,14 +55,13 @@ export default function RoomPage() {
             {currentStep === 'selectTeam' && (
                 <SelectTeamStep
                     room={room}
-                    currentUserId={currentUserId}
+                    onSelectTeam={updateRoom}
                     nextStep={() => setCurrentStep('selectPlayer')}
                 />
             )}
             {currentStep === 'selectPlayer' && (
                 <SelectPlayersStep
                     room={room}
-                    currentUserId={currentUserId}
                     nextStep={() => setCurrentStep('voting')}
                     onUpdateRoom={updateRoom}
                 />
@@ -74,7 +69,6 @@ export default function RoomPage() {
             {currentStep === 'voting' && (
                 <VotingStep
                     room={room}
-                    currentUserId={currentUserId}
                     nextStep={() => setCurrentStep('selectPlayer')}
                     onUpdateRoom={updateRoom}
                 />

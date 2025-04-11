@@ -3,17 +3,23 @@
 import { LobbyStepProps, RoomKeys } from '@/types/RoomTypes';
 import styles from '../styles/LobbyStep.module.css';
 
-import { Icon } from '@/components';
+import { Icon, Spinner } from '@/components';
 import PlayerRoomCard from '../components/PlayerRoomCard';
 import { User } from 'firebase/auth';
+import { useAuth } from '@/context/AuthContext';
 
 export default function LobbyStep({
   room,
-  currentUserId,
   onUpdateRoom,
   nextStep,
 }: LobbyStepProps) {
-  const isLeader = room.leaderId === currentUserId;
+  const { user, loading } = useAuth();
+
+  if (!user || loading) {
+    return <Spinner />;
+  }
+
+  const isLeader = room.leaderId === user.uid;
 
   const handleKickPlayer = (id: string, type: RoomKeys) => {
     const users = room[type] as User[];
@@ -22,13 +28,13 @@ export default function LobbyStep({
     onUpdateRoom({ ...room, [type]: filtered });
   };
 
-  const handleTransferLeadership = (playerId: string) => {
-    onUpdateRoom({ ...room, leaderId: playerId });
+  const handleTransferLeadership = (teamPlayer: string) => {
+    onUpdateRoom({ ...room, leaderId: teamPlayer });
   };
 
   const handleSwitchToParticipant = () => {
-    const updatedSpecs = room.specs.filter(s => s.uid !== currentUserId);
-    const newPlayer = room.specs.find(s => s.uid === currentUserId);
+    const updatedSpecs = room.specs.filter(s => s.uid !== user.uid);
+    const newPlayer = room.specs.find(s => s.uid === user.uid);
 
     if (newPlayer) {
       onUpdateRoom({
@@ -40,8 +46,8 @@ export default function LobbyStep({
   };
 
   const handleSwitchToSpec = () => {
-    const updatedPlayers = room.users.filter(p => p.uid !== currentUserId);
-    const newSpec = room.users.find(p => p.uid === currentUserId);
+    const updatedPlayers = room.users.filter(p => p.uid !== user.uid);
+    const newSpec = room.users.find(p => p.uid === user.uid);
 
     if (newSpec) {
       onUpdateRoom({
@@ -59,7 +65,7 @@ export default function LobbyStep({
         <div className={styles.grid}>
           {room.users.map((p) => {
             const isTheLeader = p.uid === room.leaderId;
-            const isMe = p.uid === currentUserId;
+            const isMe = p.uid === user.uid;
 
             return (
               p.uid && p.displayName && <PlayerRoomCard
@@ -84,7 +90,7 @@ export default function LobbyStep({
         <h2 className={styles.sectionTitle}>Espectadores</h2>
         <div className={styles.grid}>
           {room.specs.map((s) => {
-            const isMe = s.uid === currentUserId;
+            const isMe = s.uid === user.uid;
             const isTheLeader = s.uid === room.leaderId;
 
             return (

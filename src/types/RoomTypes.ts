@@ -1,12 +1,13 @@
 import { User } from "firebase/auth";
 import { TeamPlayer, TeamType } from "./Team";
+import { DocumentReference } from "firebase/firestore";
 
 export type RoomStep = 'lobby' | 'selectTeam' | 'selectPlayer' | 'voting' | 'summary';
 
 export type RoomStatus = 'waiting' | 'inProgress' | 'finished';
 
 export interface Room {
-  id: string;
+  uid: string;
   name: string;
   region: string;
   roundIds: string[];
@@ -22,7 +23,7 @@ export interface Room {
 
 export type RoomVote = {
   roomId: string;
-  playerId: string;
+  teamPlayer: TeamPlayer;
   user: Partial<User>;
   score: number;
   roundIds: string[];
@@ -33,21 +34,36 @@ export type RoomKeys = keyof Room;
 
 export interface LobbyStepProps {
   room: Room;
-  currentUserId: string;
   onUpdateRoom: (room: Room) => void;
   nextStep: () => void;
 }
 
 export type SelectPlayersStepProps = {
   room: Room;
-  currentUserId: string;
   nextStep: () => void;
   onUpdateRoom: (room: Room) => void;
 };
 
 export type VotingStepProps = {
   room: Room;
-  currentUserId: string;
   nextStep: () => void;
   onUpdateRoom: (room: Room) => void;
 };
+
+export type Round = {
+  uid: string;
+  name: string;
+  teams: DocumentReference<TeamType>[];
+}
+
+export type Region = {
+  id: string
+  name: string;
+  icon: string;
+}
+
+export type Nacionality = {
+  id: string
+  name: string;
+  icon: string;
+}

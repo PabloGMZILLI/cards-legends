@@ -1,27 +1,48 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Room } from '@/types/RoomTypes';
-import { Icon } from '@/components';
+import { Icon, Spinner } from '@/components';
 import Image from 'next/image';
 
 import styles from '../styles/SelectTeamStep.module.css';
-import { mockTeams } from '@/mocks';
+import { useAuth } from '@/context/AuthContext';
+import { TeamType } from '@/types/Team';
+import { getTeamsFromRounds } from '@/services/teamsByReferences';
 
 type SelectTeamStepProps = {
     room: Room;
-    currentUserId: string;
+    onSelectTeam: (room: Room) => void;
     nextStep: () => void;
 };
 
 export default function SelectTeamStep({
     room,
-    currentUserId,
+    onSelectTeam,
     nextStep,
 }: SelectTeamStepProps) {
-    const isLeader = room.leaderId === currentUserId;
-    const teams = mockTeams;
+    const [teams, setTeams] = useState<TeamType[]>([]);
     const [selectedTeamId, setSelectedTeamId] = useState<string | null>(null);
+    const [loading, setLoading] = useState<boolean>(true);
+
+    const { user, loading: userLoading } = useAuth();
+
+    useEffect(() => {
+        const fetchTeams = async () => {
+            const teams = await getTeamsFromRounds(room.roundIds);
+            setTeams(teams);
+            setLoading(false);
+        };
+
+        fetchTeams();
+    }, []);
+
+    if (!user || loading || userLoading) {
+        return <Spinner />;
+    }
+
+    const isLeader = room.leaderId === user.uid;
+
 
     if (!isLeader) {
         return (
@@ -29,6 +50,10 @@ export default function SelectTeamStep({
                 <p>Aguardando o líder escolher o time...</p>
             </div>
         );
+    }
+    const handleSelectTeam = (team: TeamType) => {
+        setSelectedTeamId(team.id)
+        onSelectTeam({ ...room, selectedTeam: team });
     }
 
     return (
@@ -40,11 +65,15 @@ export default function SelectTeamStep({
                     <div
                         key={team.id}
                         className={`${styles.card} ${selectedTeamId === team.id ? styles.selected : ''}`}
-                        onClick={() => setSelectedTeamId(team.id)}
-                    >
+                        onClick={() => handleSelectTeam(team)} >
                         {team.logoUrl &&
-                            <Image src={team.logoUrl}   width={64}
-                            height={64} alt={team.name} className={styles.logo} />
+                            <Image
+                                src={team.logoUrl}
+                                width={64}
+                                height={64}
+                                alt={team.name}
+                                className={styles.logo}
+                            />
                         }
                         <h3 className={styles.name}>{team.name}</h3>
                     </div>

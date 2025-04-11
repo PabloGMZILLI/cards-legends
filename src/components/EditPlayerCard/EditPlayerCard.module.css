@@ -91,14 +91,6 @@
     opacity: 0.9;
 }
 
-.stats {
-    margin: 12px 0;
-    font-size: 0.9rem;
-    display: flex;
-    gap: 10px;
-    justify-content: center;
-}
-
 .slider {
     width: 80%;
 }

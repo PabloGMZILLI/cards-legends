@@ -1,30 +1,50 @@
 'use client';
 
 import Image from 'next/image';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { SelectPlayersStepProps } from '@/types/RoomTypes';
 
 import styles from '../styles/SelectPlayersStep.module.css';
+import { useAuth } from '@/context/AuthContext';
+import { Spinner } from '@/components';
+import { TeamPlayer } from '@/types/Team';
+import { getPlayersByTeam } from '@/services/playerService';
 
 export default function SelectPlayersStep({
   room,
-  currentUserId,
   nextStep,
   onUpdateRoom,
 }: SelectPlayersStepProps) {
-  const isLeader = room.leaderId === currentUserId;
-  const players = room.selectedTeam?.players || [];
-
   const [selectedPlayerId, setSelectedPlayerId] = useState<string | null>(null);
+  const [players, setPlayers] = useState<TeamPlayer[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
 
-  const handleSelect = (id: string) => {
-    setSelectedPlayerId(id);
+  const { user, loading: userLoading } = useAuth();
+
+  useEffect(() => {
+    const fetchTeams = async () => {
+      const players = await getPlayersByTeam(room.selectedTeam?.id as string);
+      setPlayers(players);
+      setLoading(false);
+    };
+
+    fetchTeams();
+  }, []);
+
+  if (!user || loading || userLoading) {
+    return <Spinner />;
+  }
+
+  const isLeader = room.leaderId === user.uid;
+
+  const handleSelect = (uid: string) => {
+    setSelectedPlayerId(uid);
   };
 
   const handleNextClick = () => {
     if (!selectedPlayerId) return;
 
-    const selected = players.find((p) => p.id === selectedPlayerId);
+    const selected = players.find((p) => p.uid === selectedPlayerId);
     if (!selected) return;
 
     onUpdateRoom({
@@ -50,9 +70,9 @@ export default function SelectPlayersStep({
       <div className={styles.grid}>
         {players.map((player) => (
           <div
-            key={player.id}
-            className={`${styles.card} ${selectedPlayerId === player.id ? styles.selected : ''}`}
-            onClick={() => handleSelect(player.id)}
+            key={player.uid}
+            className={`${styles.card} ${selectedPlayerId === player.uid ? styles.selected : ''}`}
+            onClick={() => handleSelect(player.uid)}
           >
             <Image
               src={player.image}

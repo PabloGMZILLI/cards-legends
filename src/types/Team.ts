@@ -1,20 +1,21 @@
+import { DocumentReference } from "firebase/firestore";
+import { Nacionality, Region } from "./RoomTypes";
+
 export type TeamType = {
     id: string;
     name: string;
     logoUrl: string;
     region: string;
-    players: TeamPlayer[];
 };
 
 export type TeamPlayerRole = 'Top' | 'Jungle' | 'Mid' | 'ADC' | 'Support';
 
 export type TeamPlayer = {
-    id: string
+    uid: string
     name: string;
     role: TeamPlayerRole;
     image: string;
-    team: TeamType
-    regionIcon: string;
-    nacionalityIcon: string;
-    stats: [string, string];
+    team: DocumentReference<TeamType> | TeamType;
+    region: DocumentReference<Region> | Region;
+    nacionality: DocumentReference<Nacionality> | Nacionality;
 };

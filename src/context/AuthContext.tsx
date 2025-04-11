@@ -2,7 +2,7 @@
 
 import { createContext, useContext, useEffect, useState } from 'react';
 import { onAuthStateChanged, User } from 'firebase/auth';
-import { auth } from '@/services/firebase';
+import { auth } from '@/lib/firebase';
 
 type AuthContextType = {
   isLoggedIn: boolean;

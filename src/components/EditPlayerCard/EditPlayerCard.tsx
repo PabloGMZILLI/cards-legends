@@ -44,21 +44,21 @@ export default function PlayerCard({
 
                     <div className={styles.badges}>
                         <Image
-                            src={player?.team?.logoUrl}
+                            src={player?.team && 'logoUrl' in player.team ? player.team.logoUrl : ''}
                             alt="Time"
                             width={32}
                             height={32}
                             className={styles.badgeIcon}
                         />
                         <Image
-                            src={player.nacionalityIcon}
+                            src={'icon' in player.nacionality ? player.nacionality.icon : ''}
                             alt="País"
                             width={32}
                             height={32}
                             className={styles.badgeIcon}
                         />
                         <Image
-                            src={player.regionIcon}
+                            src={'icon' in player.region ? player.region.icon : ''}
                             alt="Região"
                             width={32}
                             height={32}
@@ -79,11 +79,6 @@ export default function PlayerCard({
 
                         <h3 className={styles.name}>{player.name}</h3>
                         <span className={styles.role}>{player.role}</span>
-
-                        <div className={styles.stats}>
-                            <p>{player.stats[0]}</p>
-                            <p>{player.stats[1]}</p>
-                        </div>
 
                         <input
                             type="range"
