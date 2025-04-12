@@ -6,7 +6,7 @@ import { SelectPlayersStepProps } from '@/types/RoomTypes';
 
 import styles from '../styles/SelectPlayersStep.module.css';
 import { useAuth } from '@/context/AuthContext';
-import { Spinner } from '@/components';
+import { Icon, Spinner } from '@/components';
 import { TeamPlayer } from '@/types/Team';
 import { getPlayersByTeam } from '@/services/playerService';
 
@@ -32,7 +32,7 @@ export default function SelectPlayersStep({
   }, []);
 
   if (!user || loading || userLoading) {
-    return <Spinner />;
+    return <Spinner center={true} />;
   }
 
   const isLeader = room.leaderId === user.uid;
@@ -68,12 +68,16 @@ export default function SelectPlayersStep({
       <h2 className={styles.title}>Selecione um jogador para avaliação</h2>
 
       <div className={styles.grid}>
-        {players.map((player) => (
+        {players.map((player) => {
+          const isVoted = room.voted?.players?.includes(player.uid);
+
+          return (
           <div
             key={player.uid}
-            className={`${styles.card} ${selectedPlayerId === player.uid ? styles.selected : ''}`}
-            onClick={() => handleSelect(player.uid)}
+              className={`${styles.card} ${selectedPlayerId === player.uid ? styles.selected : ''} ${isVoted ? styles.voted : ''}`}
+              onClick={() => !isVoted && handleSelect(player.uid)}
           >
+              {isVoted && <Icon name="check" className={styles.checkIcon} size='30' />}
             <Image
               src={player.image}
               alt={player.name}
@@ -84,7 +88,8 @@ export default function SelectPlayersStep({
             <p className={styles.name}>{player.name}</p>
             <p className={styles.role}>{player.role}</p>
           </div>
-        ))}
+          )
+        })}
       </div>
 
       <button onClick={handleNextClick} className={styles.nextButton} disabled={!selectedPlayerId}>

@@ -5,10 +5,11 @@ import { Button, EditPlayerCard, Spinner } from '@/components';
 
 import styles from '../styles/VotingStep.module.css';
 import { mockVotes, mockUser } from '@/mocks';
-import { RoomVote, VotingStepProps } from '@/types/RoomTypes';
+import { UserVote, VotingStepProps } from '@/types/RoomTypes';
 import { TeamPlayer, TeamType } from '@/types/Team';
 import { saveVote } from '@/services/votes/saveVote';
 import { useAuth } from '@/context/AuthContext';
+import { markPlayerAsVoted } from '@/services/votes/markPlayerAsVoted';
 
 
 const mockIsLeader = true;
@@ -18,7 +19,7 @@ export default function VotingStep({
     nextStep,
     onUpdateRoom
 }: VotingStepProps) {
-    const [votes, setVotes] = useState<RoomVote[]>(mockVotes);
+    const [votes, setVotes] = useState<UserVote[]>(mockVotes);
     const [myScore, setMyScore] = useState(50);
     const { user, loading } = useAuth();
 
@@ -28,7 +29,7 @@ export default function VotingStep({
 
     const currentPlayer = room.selectedPlayer as TeamPlayer;
 
-    const getPlayerVotes = (teamPlayer: TeamPlayer): RoomVote[] => {
+    const getPlayerVotes = (teamPlayer: TeamPlayer): UserVote[] => {
         return votes.filter((v) => v.teamPlayer.uid === teamPlayer.uid);
     };
 
@@ -44,15 +45,6 @@ export default function VotingStep({
     };
 
     const handleSaveVote = async () => {
-        await saveVote({
-            teamPlayer: currentPlayer,
-            user: user,
-            score: myScore,
-            roundIds: room.roundIds,
-            team: room.selectedTeam as TeamType,
-            roomId: room.uid,
-        });
-
         setVotes((prev) => {
             const filtered = prev.filter(
                 (v) => !(v.teamPlayer === currentPlayer && v.user.uid === user.uid)
@@ -70,7 +62,6 @@ export default function VotingStep({
                 },
             ];
         });
-        onUpdateRoom(room)
     };
 
     const hasEveryoneVoted = () => {
@@ -80,6 +71,26 @@ export default function VotingStep({
     const alreadyVoted = votes.some(
         (v) => v.teamPlayer === currentPlayer && v.user.uid === user.uid
     );
+
+    const handleNext = async () => {
+        await saveVote({
+            teamPlayer: currentPlayer,
+            user: user,
+            score: myScore,
+            roundIds: room.roundIds,
+            team: room.selectedTeam as TeamType,
+            roomId: room.uid,
+        });
+        await markPlayerAsVoted(room.uid, currentPlayer.uid);
+        onUpdateRoom({
+            ...room,
+            voted: {
+                ...room.voted,
+                players: [...(room.voted?.players || []), currentPlayer.uid],
+            }
+        });
+        nextStep();
+    }
 
     return (
         <div className={styles.container}>
@@ -98,7 +109,7 @@ export default function VotingStep({
             </p>
 
             {mockIsLeader && (
-                <Button onClick={nextStep} disabled={!hasEveryoneVoted()}>
+                <Button onClick={handleNext} disabled={!hasEveryoneVoted()}>
                     Próximo
                 </Button>
             )}

@@ -16,7 +16,7 @@ export default function LobbyStep({
   const { user, loading } = useAuth();
 
   if (!user || loading) {
-    return <Spinner />;
+    return <Spinner center={true} />;
   }
 
   const isLeader = room.leaderId === user.uid;

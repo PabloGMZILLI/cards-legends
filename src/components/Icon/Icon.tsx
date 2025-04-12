@@ -1,10 +1,10 @@
 // src/components/icons/DefaultIcon.tsx
 'use client';
 
-import { LucideIcon, Crown, X, User, Trash2, LucideProps, ArrowRight, ArrowUp, ArrowDown } from 'lucide-react';
+import { LucideIcon, Crown, X, User, Trash2, LucideProps, ArrowRight, ArrowUp, ArrowDown, Check } from 'lucide-react';
 import styles from './Icon.module.css';
 
-type IconName = 'crown' | 'x' | 'user' | 'trash' | 'arrowRight' | 'arrowUp' | 'arrowDown';
+type IconName = 'crown' | 'x' | 'user' | 'trash' | 'arrowRight' | 'arrowUp' | 'arrowDown' | 'check';
 
 interface DefaultIconProps extends LucideProps {
     name: IconName;
@@ -20,6 +20,7 @@ const iconMap: Record<IconName, LucideIcon> = {
     arrowRight: ArrowRight,
     arrowUp: ArrowUp,
     arrowDown: ArrowDown,
+    check: Check,
 };
 
 export default function DefaultIcon({

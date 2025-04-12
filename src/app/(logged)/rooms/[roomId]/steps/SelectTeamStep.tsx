@@ -38,7 +38,7 @@ export default function SelectTeamStep({
     }, []);
 
     if (!user || loading || userLoading) {
-        return <Spinner />;
+        return <Spinner center={true} />;
     }
 
     const isLeader = room.leaderId === user.uid;

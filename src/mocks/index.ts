@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { Room, RoomVote } from "@/types/RoomTypes";
+import { Room, UserVote } from "@/types/RoomTypes";
 import { TeamPlayer, TeamType } from "@/types/Team";
 import { IdTokenResult, User } from "firebase/auth";
 
@@ -106,7 +106,7 @@ export const mockPlayers: TeamPlayer[] = [
     },
 ];
 
-export const mockVotes: RoomVote[] = [
+export const mockVotes: UserVote[] = [
     {
         user: mockUser, teamPlayer: mockPlayers[0], score: 80,
         roundIds: ["1", "2"],

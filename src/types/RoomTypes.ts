@@ -19,9 +19,13 @@ export interface Room {
   nextStep?: RoomStep;
   selectedTeam?: TeamType;
   selectedPlayer?: TeamPlayer;
+  voted?: {
+    players?: string[];
+    teams?: string[];
+  };
 }
 
-export type RoomVote = {
+export type UserVote = {
   roomId: string;
   teamPlayer: TeamPlayer;
   user: Partial<User>;
