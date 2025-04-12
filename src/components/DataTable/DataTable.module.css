@@ -1,0 +1,60 @@
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1.5rem;
+    border-radius: var(--border-radius);
+    overflow: hidden;
+}
+
+.table thead {
+    background-color: var(--background-accent-color);
+    color: var(--color-white);
+}
+
+.table th {
+    padding: 12px 16px;
+    text-align: center;
+    border-bottom: 1px solid var(--color-secondary-light);
+    font-weight: 600;
+    font-size: 0.95rem;
+}
+
+.table td {
+    padding: 12px 16px;
+    text-align: center;
+    justify-items: center;
+    border-bottom: 1px solid var(--color-secondary);
+    font-size: 0.9rem;
+    color: var(--color-white);
+}
+
+.even {
+    background-color: var(--background-secondary-light-color);
+}
+
+.odd {
+    background-color: var(--background-primary-color);
+}
+
+.table tr:hover {
+    background-color: var(--background-accent-color);
+    transition: var(--transition);
+}
+
+.actions button {
+    background-color: transparent;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    padding: 4px;
+    color: var(--color-neutral-200);
+    transition: var(--transition);
+}
+
+.actions button:hover {
+    background-color: var(--background-primary-color);
+}
+
+.editButton {
+    margin-right: 15px;
+}

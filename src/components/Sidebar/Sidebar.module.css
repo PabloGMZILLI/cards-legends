@@ -14,7 +14,7 @@
 }
 
 .menu li {
-    margin-bottom: 1.5rem;
+    margin-bottom: 1rem;
 }
 
 .menu li a,
@@ -41,4 +41,22 @@
 
 .menu .logout button {
     color: #ff4d4d;
+}
+.dropdownHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+}
+
+.submenu {
+    margin-top: 15px;
+    padding-left: 12px;
+    display: flex;
+    flex-direction: column;
+}
+
+.activeSub a {
+    font-weight: 500;
+    color: var(--primary-color);
 }

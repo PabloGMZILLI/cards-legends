@@ -7,7 +7,6 @@ export default function Spinner({ size = 24, center = false }: { size?: number, 
         display: center ? 'flex' : undefined,
         justifyContent: center ? 'center' : undefined,
         alignItems: center ? 'center' : undefined,
-        height: center ? '100vh' : undefined,
       }}
     >
       <svg

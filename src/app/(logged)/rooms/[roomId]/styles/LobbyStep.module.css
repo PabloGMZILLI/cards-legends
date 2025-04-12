@@ -80,5 +80,5 @@
 }
 
 .switchCard:hover {
-  background-color: #ccc;
+  background-color: var(--color-secondary-light);
 }

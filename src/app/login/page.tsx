@@ -72,7 +72,7 @@ export default function LoginPage() {
         <p className={styles.switchText}>
           Não tem conta?
           <Link href="/register">
-            Entrar
+            Criar
           </Link>
         </p>
       </form>

@@ -33,20 +33,39 @@ export default function BaseSelect({ label, options, value, onChange, multi = fa
                 placeholder={placeholder}
                 classNamePrefix="select"
                 styles={{
+                    menu: (provided) => ({
+                        ...provided,
+                        backgroundColor: 'var(--background-primary-color)',
+                        color: 'var(--color-white)',
+                        borderRadius: '0px',
+                    }),
                     option: (provided, state) => ({
-                      ...provided,
-                      color: 'black',
-                      backgroundColor: state.isFocused ? '#f0f0f0' : 'white',
+                        ...provided,
+                        color: 'var(--color-white)',
+                        backgroundColor: state.isFocused ? 'var(--background-accent-color)' : 'var(--background-primary-color)',
+                        borderBottom: '1px solid var(--background-primary-color)',
+                        borderTop: '1px solid var(--background-primary-color)',
                     }),
                     singleValue: (provided) => ({
-                      ...provided,
-                      color: 'black',
+                        ...provided,
+                        color: 'var(--color-white)',
+                        backgroundColor: 'var(--background-primary-color)',
                     }),
                     multiValueLabel: (provided) => ({
-                      ...provided,
-                      color: 'black',
+                        ...provided,
+                        color: 'var(--color-white)',
+                        backgroundColor: 'var(--background-primary-color)',
                     }),
-                  }}
+                    control: (provided, state) => ({
+                        ...provided,
+                        borderColor: state.isFocused ? 'var(--color-white)' : provided.borderColor,
+                        boxShadow: state.isFocused ? '0 0 0 1px var(--color-white)' : provided.boxShadow,
+                        backgroundColor: 'var(--background-primary-color)',
+                        '&:hover': {
+                            borderColor: 'var(--color-white)',
+                        },
+                    }),
+                }}
             />
         </div>
     );
