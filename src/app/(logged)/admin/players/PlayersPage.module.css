@@ -1,0 +1,17 @@
+.container {
+    background-color: var(--background-secondary-color);
+    padding: 50px 100px;
+    border-radius: var(--border-radius);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    width: fit-content;
+    height: auto;
+    margin: 50px auto;
+    min-width: 800px;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+}

@@ -17,6 +17,7 @@ export default function BaseSelect({ label, options, value, onChange, multi = fa
         if (multi) {
             onChange(selectedOption ? selectedOption.map((opt: Option) => opt.value) : []);
         } else {
+            console.log('selectedOption', selectedOption)
             onChange(selectedOption?.value || '');
         }
     };

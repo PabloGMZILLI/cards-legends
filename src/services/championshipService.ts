@@ -8,7 +8,7 @@ export const getChampionships = async (): Promise<ChampionshipWithRegion[]> => {
   const championships: ChampionshipWithRegion[] = [];
 
   for (const docSnap of snapshot.docs) {
-    const data = docSnap.data() as Championship;
+    const data = { ...docSnap.data(), id: docSnap.id } as Championship;
     let regionData: Region | undefined;
 
     try {
@@ -43,7 +43,6 @@ export const createChampionship = async (data: {
   
     const regionRef: DocumentReference<Region> = doc(db, 'regions', regionId).withConverter(createConverter<Region>());
 
-  
     const championship: Omit<Championship, 'id'> = {
         name,
         split,

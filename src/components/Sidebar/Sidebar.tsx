@@ -47,7 +47,7 @@ export default function Sidebar() {
         <ul className={styles.menu}>
           {menuItems.map(({ label, path, subItems }) => {
             const isActive = pathname.startsWith(path);
-            const isOpen = openMenus[path];
+            const isOpen = openMenus[path] ?? subItems?.some(({ path: subPath }) => pathname.startsWith(subPath));
 
             return (
               <li key={path} className={isActive ? styles.active : ''}>

@@ -55,13 +55,19 @@ export type VotingStepProps = {
 };
 
 export type Round = {
+  id: string;
   name: string;
   roundNumber: number;
   startDate: Date;
   endDate: Date;
-  teams: DocumentReference<TeamType>[];
+  matchs: DocumentReference<Match>[];
   championship: DocumentReference<Championship>;
 }
+
+export type RoundWithChampionship = Round & {
+  id: string;
+  championshipData?: Championship;
+};
 
 export type Championship = {
   id: string;
@@ -77,6 +83,7 @@ export type ChampionshipWithRegion = Championship & {
 };
 
 export type Match = {
+  id: string;
   round: DocumentReference<Round>;
   teamA: DocumentReference<TeamType>;
   teamB: DocumentReference<TeamType>;
