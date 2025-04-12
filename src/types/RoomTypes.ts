@@ -88,9 +88,16 @@ export type Match = {
   teamA: DocumentReference<TeamType>;
   teamB: DocumentReference<TeamType>;
   date: Date;
-  winner: DocumentReference<TeamType> | null;
+  winner: 'teamA' | 'teamB' | null;
   championship: DocumentReference<Championship>;
 };
+
+export type MatchWithDetails = Match & {
+  roundData?: Round;
+  teamAData?: TeamType;
+  teamBData?: TeamType;
+  championshipData?: Championship;
+}
 
 export type Region = {
   id: string

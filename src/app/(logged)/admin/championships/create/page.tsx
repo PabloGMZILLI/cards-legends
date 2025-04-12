@@ -47,9 +47,14 @@ export default function CreateChampionshipPage() {
           year: parseInt(year),
           regionId,
         }),
+      }).then((res) => {
+        if (!res.ok) {
+          throw new Error('Erro ao criar campeonato');
+        }
+        router.push('/admin/championships');
       });
 
-      router.push('/admin/championships');
+      console.error('Erro ao criar campeonato:');
     } catch (err) {
       console.error('Erro ao criar campeonato:', err);
     } finally {

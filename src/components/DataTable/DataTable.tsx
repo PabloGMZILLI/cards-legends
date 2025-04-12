@@ -33,7 +33,7 @@ export default function DataTable<T>({
         </tr>
       </thead>
       <tbody>
-        {data.map((row, i) => (
+        {data?.map((row, i) => (
           <tr key={i} className={i % 2 === 0 ? styles.even : styles.odd}>
             {columns.map((col) => (
               <td key={String(col.key)}>

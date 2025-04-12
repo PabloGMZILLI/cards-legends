@@ -1,79 +1,90 @@
+// src/app/(logged)/admin/matches/page.tsx
+
 'use client';
 
 import { useEffect, useState } from 'react';
-import { Button, DataTable, Spinner } from '@/components';
-import { Match } from '@/types/RoomTypes';
 import { useRouter } from 'next/navigation';
+import { Button, DataTable, Spinner } from '@/components';
+import { MatchWithDetails } from '@/types/RoomTypes';
 
 import styles from './MatchesPage.module.css';
 
 export default function MatchesPage() {
-    const [matches, setMatches] = useState<Match[]>([]);
-    const [loading, setLoading] = useState(true);
-    const router = useRouter();
+  const [matches, setMatches] = useState<MatchWithDetails[]>([]);
+  const [loading, setLoading] = useState(true);
+  const router = useRouter();
 
-    const fetchMatches = async () => {
-        try {
-            const data = await fetch('/api/matches').then((res) => res.json());
-            setMatches(data);
-        } catch (error) {
-            console.error('Erro ao buscar rodadas:', error);
-        } finally {
-            setLoading(false);
+  const fetchMatches = async () => {
+    try {
+       fetch('/api/matches').then(async (res) => {
+        console.log(res);
+        if (!res.ok) {
+          throw new Error('Erro ao buscar partidas');
         }
-    };
-    const handleEdit = (match: Match) => {
-        console.log(`Editar: ${match.id}`);
-        // TODO: abrir modal ou redirecionar para tela de edição
-    };
+        const data = await res.json();
+        setMatches(data);
 
-    const handleDelete = async (match: Match) => {
-        const confirm = window.confirm(`Tem certeza que deseja deletar o match "${match.id}"?`);
-        if (!confirm) return;
+      });
+    } catch (error) {
+      console.error('Erro ao buscar partidas:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
-        try {
-            await fetch(`/api/matches/${match.id}`, {
-                method: 'DELETE',
-            }).then((res) => {
-                if (!res.ok) {
-                    throw new Error('Erro ao deletar match');
-                }
-                setMatches((prev) => prev.filter((r) => r.id !== match.id));
-                return res.json();
-            });
+  useEffect(() => {
+    fetchMatches();
+  }, []);
 
-        } catch (err) {
-            console.error('Erro ao deletar match:', err);
-            alert('Erro ao deletar.');
-        }
-    };
+  return (
+    <div className={styles.container}>
+      <div className={styles.header}>
+        <h1>Partidas</h1>
+        <Button onClick={() => router.push('/admin/matches/create')}>
+          Adicionar Nova Partida
+        </Button>
+      </div>
 
-    useEffect(() => {
-        fetchMatches();
-    }, []);
-
-    return (
-        <div className={styles.container}>
-            <div className={styles.header}>
-                <h1>Partidas</h1>
-                <Button onClick={() => router.push('/admin/matches/create')}>Adicionar Partida</Button>
-            </div>
-
-            {loading ? (
-                <Spinner center />
-            ) : matches.length === 0 ? (
-                <p>Nenhuma partida cadastrada.</p>
-            ) : (
-                <DataTable
-                    data={matches}
-                    withActions
-                    onEdit={handleEdit}
-                    onDelete={handleDelete}
-                    columns={[
-                        { key: 'id', label: 'Id' },
-                    ]}
-                />
-            )}
-        </div>
-    );
+      {loading ? (
+        <Spinner center />
+      ) : matches.length === 0 ? (
+        <p>Nenhuma partida cadastrada.</p>
+      ) : (
+        <DataTable
+          data={matches}
+          columns={[
+            {
+              key: 'teamA',
+              label: 'Time A',
+              render: (match) => match.teamAData?.name || '-',
+            },
+            {
+              key: 'teamB',
+              label: 'Time B',
+              render: (match) => match.teamBData?.name || '-',
+            },
+            {
+              key: 'winner',
+              label: 'Vencedor',
+              render: (match) => {
+                if (match.winner === 'teamA') return match.teamAData?.name || '-';
+                if (match.winner === 'teamB') return match.teamBData?.name || '-';
+                return 'Empate';
+              },
+            },
+            {
+              key: 'date',
+              label: 'Data',
+              render: (match) => new Date(match.date).toLocaleDateString('pt-BR'),
+            },
+            {
+              key: 'championship',
+              label: 'Campeonato',
+              render: (match) => match.championshipData?.name || '-',
+            },
+          ]}
+        />
+      )}
+    </div>
+  );
 }

@@ -2,7 +2,7 @@
 import { createConverter } from '@/converters/firestoreConverter';
 import { db } from '@/lib/firebase';
 import { Championship, Round, RoundWithChampionship } from '@/types/RoomTypes';
-import { addDoc, collection, deleteDoc, doc, DocumentData, DocumentReference, getDoc, getDocs } from 'firebase/firestore';
+import { addDoc, collection, deleteDoc, doc, DocumentData, DocumentReference, getDoc, getDocs, query, where } from 'firebase/firestore';
 
 export const getRoundsByIds = async (roundIds: string[]): Promise<Round[]> => {
   const rounds: Round[] = [];
@@ -71,4 +71,14 @@ export const createRound = async (data: {
 export const deleteRound = async (roundId: string) => {
   const roundRef = doc(db, 'rounds', roundId);
   await deleteDoc(roundRef);
+};
+
+export const getRoundsByChampionship = async (championshipId: string): Promise<Round[]> => {
+  const q = query(
+    collection(db, 'rounds').withConverter(createConverter<Round>()),
+    where('championship', '==', doc(db, 'championships', championshipId))
+  );
+
+  const snapshot = await getDocs(q);
+  return snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
 };
