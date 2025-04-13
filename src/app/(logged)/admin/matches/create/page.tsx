@@ -2,74 +2,81 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { Button, Input, Select } from '@/components';
-import { Championship, Round } from '@/types/RoomTypes';
+import { Button, Select } from '@/components';
 
-import { getChampionships } from '@/services/championshipService';
 import { getRoundsByChampionship } from '@/services/roundService';
-import { getTeamsFromRounds } from '@/services/teamService';
-import { createMatch } from '@/services/matchesService';
 
 import styles from './CreateMatchPage.module.css';
 import { TeamType } from '@/types/Team';
+import { Option } from '@/components/Select/types';
 
 export default function CreateMatchPage() {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
-  const [championships, setChampionships] = useState<Championship[]>([]);
-  const [rounds, setRounds] = useState<Round[]>([]);
-  const [teams, setTeams] = useState<TeamType[]>([]);
-
+  const [championships, setChampionships] = useState<Option[]>([]);
+  const [rounds, setRounds] = useState<Option[]>([]);
+  const [teams, setTeams] = useState<Option[]>([]);
   const [championshipId, setChampionshipId] = useState('');
   const [roundId, setRoundId] = useState('');
   const [teamAId, setTeamAId] = useState('');
   const [teamBId, setTeamBId] = useState('');
-  const [winner, setWinner] = useState<'teamA' | 'teamB' | null>(null);
-  const [date, setDate] = useState('');
 
   useEffect(() => {
-    const fetchInitialData = async () => {
-      const data = await getChampionships();
-      setChampionships(data);
-    };
-    fetchInitialData();
+    fetch('/api/championships')
+      .then((res) => res.json())
+      .then((data: TeamType[]) => {
+        const options = data.map((championship) => ({
+          label: championship.name,
+          value: championship.id,
+        }));
+        setChampionships(options);
+      })
+      .catch(() => alert('Erro ao carregar times'));
+
+    fetch('/api/teams')
+      .then((res) => res.json())
+      .then((data: TeamType[]) => {
+        const options = data.map((team) => ({
+          label: team.name,
+          value: team.id,
+        }));
+        setTeams(options);
+      })
+      .catch(() => alert('Erro ao carregar times'));
   }, []);
 
   useEffect(() => {
     if (!championshipId) return;
 
-    const fetchRoundsAndTeams = async () => {
-      const r = await getRoundsByChampionship(championshipId);
-      setRounds(r);
-
-      const t = await getTeamsFromRounds(r);
-      setTeams(t);
+    const fetchRounds = async () => {
+      const rounds = await getRoundsByChampionship(championshipId);
+      setRounds(rounds.map((r) => ({ label: r.name, value: r.id })));
     };
 
-    fetchRoundsAndTeams();
+    fetchRounds();
   }, [championshipId]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!championshipId || !roundId || !teamAId || !teamBId || !date) return;
+    if (!championshipId || !roundId || !teamAId || !teamBId) return;
 
     setLoading(true);
-    try {
-      await createMatch({
+    await fetch('/api/matches', {
+      method: 'POST',
+      body: JSON.stringify({
         championshipId,
         roundId,
         teamAId,
-        teamBId,
-        winner,
-        date,
-      });
-
+        teamBId
+      }),
+    }).then((res) => {
+      if (!res.ok) {
+        throw new Error('Erro ao criar partida');
+      }
       router.push('/admin/matches');
-    } catch (err) {
-      console.error('Erro ao criar partida:', err);
-    } finally {
+    }).finally(() => {
       setLoading(false);
-    }
+    });
   };
 
   return (
@@ -81,46 +88,28 @@ export default function CreateMatchPage() {
           label="Campeonato"
           value={championshipId}
           onChange={(val) => setChampionshipId(val as string)}
-          options={championships.map((c) => ({ label: c.name, value: c.id }))}
+          options={championships}
         />
 
         <Select
           label="Rodada"
           value={roundId}
           onChange={(val) => setRoundId(val as string)}
-          options={rounds.map((r) => ({ label: r.name, value: r.id }))}
+          options={rounds}
         />
 
         <Select
           label="Time A"
           value={teamAId}
           onChange={(val) => setTeamAId(val as string)}
-          options={teams.map((t) => ({ label: t.name, value: t.id }))}
+          options={teams}
         />
 
         <Select
           label="Time B"
           value={teamBId}
           onChange={(val) => setTeamBId(val as string)}
-          options={teams.map((t) => ({ label: t.name, value: t.id }))}
-        />
-
-        <Select
-          label="Vencedor"
-          value={winner || ''}
-          onChange={(val) => setWinner(val as 'teamA' | 'teamB' | null)}
-          options={[
-            { label: 'Time A', value: 'teamA' },
-            { label: 'Time B', value: 'teamB' },
-            { label: 'Empate', value: '' },
-          ]}
-        />
-
-        <Input
-          label="Data"
-          type="date"
-          value={date}
-          onChange={(e) => setDate(e.target.value)}
+          options={teams}
         />
 
         <Button type="submit" disabled={loading}>

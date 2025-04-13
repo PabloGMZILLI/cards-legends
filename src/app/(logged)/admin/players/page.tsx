@@ -39,7 +39,7 @@ export default function PlayersPage() {
         await fetch(`/api/players/${uid}`, { method: 'DELETE' }).then((res) => {
             if (!res.ok) {
                 console.error('Erro ao deletar jogador:');
-                throw new Error('Erro ao deletar time');
+                throw new Error('Erro ao deletar jogador');
             }
             setPlayers((prev) => prev.filter((p) => p.uid !== uid));
         });

@@ -56,7 +56,7 @@ export const deleteMatch = async (id: string) => {
 };
 
 export const createMatch = async (data: CreateMatchPayload): Promise<void> => {
-    const { championshipId, roundId, teamAId, teamBId, winner, date } = data;
+    const { championshipId, roundId, teamAId, teamBId } = data;
 
     const championshipRef = doc(db, 'championships', championshipId).withConverter(
         createConverter<Championship>()
@@ -74,13 +74,11 @@ export const createMatch = async (data: CreateMatchPayload): Promise<void> => {
         createConverter<TeamType>()
     );
 
-    const match: Omit<Match, 'id'> = {
+    const match: Omit<Match, 'id' | 'winner'> = {
         championship: championshipRef,
         round: roundRef,
         teamA: teamARef,
         teamB: teamBRef,
-        winner,
-        date: new Date(date),
     };
 
     await addDoc(collection(db, 'matches'), match);

@@ -17,7 +17,6 @@ export default function MatchesPage() {
   const fetchMatches = async () => {
     try {
        fetch('/api/matches').then(async (res) => {
-        console.log(res);
         if (!res.ok) {
           throw new Error('Erro ao buscar partidas');
         }
@@ -30,6 +29,20 @@ export default function MatchesPage() {
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleDelete = async (match: MatchWithDetails) => {
+      const confirmed = confirm('Deseja mesmo deletar esta partida?');
+      if (!confirmed) return;
+      const { id } = match;
+
+      await fetch(`/api/matches/${id}`, { method: 'DELETE' }).then((res) => {
+          if (!res.ok) {
+              console.error('Erro ao deletar partida:');
+              throw new Error('Erro ao deletar partida');
+          }
+          setMatches((prev) => prev.filter((m) => m.id !== id));
+      });
   };
 
   useEffect(() => {
@@ -52,6 +65,9 @@ export default function MatchesPage() {
       ) : (
         <DataTable
           data={matches}
+          withActions
+          onEdit={(match) => router.push(`/admin/matches/${match.id}/edit`)}
+          onDelete={handleDelete}
           columns={[
             {
               key: 'teamA',
@@ -69,13 +85,8 @@ export default function MatchesPage() {
               render: (match) => {
                 if (match.winner === 'teamA') return match.teamAData?.name || '-';
                 if (match.winner === 'teamB') return match.teamBData?.name || '-';
-                return 'Empate';
+                return '-';
               },
-            },
-            {
-              key: 'date',
-              label: 'Data',
-              render: (match) => new Date(match.date).toLocaleDateString('pt-BR'),
             },
             {
               key: 'championship',

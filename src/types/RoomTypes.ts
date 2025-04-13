@@ -87,7 +87,6 @@ export type Match = {
   round: DocumentReference<Round>;
   teamA: DocumentReference<TeamType>;
   teamB: DocumentReference<TeamType>;
-  date: Date;
   winner: 'teamA' | 'teamB' | null;
   championship: DocumentReference<Championship>;
 };
