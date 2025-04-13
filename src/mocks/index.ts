@@ -1,7 +1,8 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { Room, UserVote } from "@/types/RoomTypes";
+import { Region, Room, UserVote } from "@/types/RoomTypes";
 import { TeamPlayer, TeamType } from "@/types/Team";
 import { IdTokenResult, User } from "firebase/auth";
+import { DocumentReference } from "firebase/firestore";
 
 export const mockUser: User = {
     uid: '123',
@@ -45,13 +46,13 @@ export const mockTeams: TeamType[] = [
         id: '7wkJpClJjyGPOEnecxDM',
         name: 'Pain',
         logoUrl: '/images/teams/pain.png',
-        region: 'lta-sul',
+        region: { id: 'mock-region-id', path: 'regions/mock-region-id', firestore: {} } as unknown as DocumentReference<Region>
     },
     {
         id: 'team2',
         name: 'Fire Wolves',
         logoUrl: '/images/teams/pain.png',
-        region: 'lta-sul',
+        region: { id: 'mock-region-id', path: 'regions/mock-region-id', firestore: {} } as unknown as DocumentReference<Region>
     },
 ];
 
@@ -75,7 +76,6 @@ export const mockPlayers: TeamPlayer[] = [
         image: '/images/players/titan.png',
         team: mockTeams[0],
         nacionality: mockNacionality,
-        region: mockRegion,
     },
     {
         uid: '2',
@@ -84,7 +84,6 @@ export const mockPlayers: TeamPlayer[] = [
         image: '/images/players/revolta.png',
         team: mockTeams[0],
         nacionality: mockNacionality,
-        region: mockRegion,
     },
     {
         uid: '3',
@@ -93,7 +92,6 @@ export const mockPlayers: TeamPlayer[] = [
         image: '/images/players/takeshi.png',
         team: mockTeams[0],
         nacionality: mockNacionality,
-        region: mockRegion,
     },
     {
         uid: '4',
@@ -102,7 +100,6 @@ export const mockPlayers: TeamPlayer[] = [
         image: '/images/players/robo.png',
         team: mockTeams[0],
         nacionality: mockNacionality,
-        region: mockRegion,
     },
 ];
 

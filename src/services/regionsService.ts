@@ -1,5 +1,5 @@
 import { db } from '@/lib/firebase';
-import { addDoc, collection, getDocs } from 'firebase/firestore';
+import { addDoc, collection, deleteDoc, doc, getDocs } from 'firebase/firestore';
 
 export const createRegion = async (name: string, icon: string) => {
   const ref = collection(db, 'regions');
@@ -12,4 +12,9 @@ export const getAllRegions = async () => {
     id: doc.id,
     ...doc.data(),
   }));
+};
+
+export const deleteRegion = async (id: string) => {
+  const ref = doc(db, 'regions', id);
+  await deleteDoc(ref);
 };

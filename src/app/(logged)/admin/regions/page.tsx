@@ -3,9 +3,8 @@
 import { useEffect, useState } from 'react';
 import styles from './RegionPage.module.css';
 import { Region } from '@/types/RoomTypes';
-import { Button, Spinner } from '@/components';
+import { Button, Spinner, DataTable } from '@/components';
 import Image from 'next/image';
-import DataTable from '@/components/DataTable/DataTable';
 import { useRouter } from 'next/navigation';
 
 export default function RegionsPage() {

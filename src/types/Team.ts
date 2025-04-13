@@ -5,10 +5,14 @@ export type TeamType = {
     id: string;
     name: string;
     logoUrl: string;
-    region: string;
+    region: DocumentReference<Region>;
 };
 
-export type TeamPlayerRole = 'Top' | 'Jungle' | 'Mid' | 'ADC' | 'Support';
+export type TeamWithRegion = TeamType & {
+    regionData: Region;
+};
+
+export type TeamPlayerRole = 'Top' | 'Jungle' | 'Mid' | 'ADC' | 'Support' | 'HeadCoach';
 
 export type TeamPlayer = {
     uid: string
@@ -16,6 +20,5 @@ export type TeamPlayer = {
     role: TeamPlayerRole;
     image: string;
     team: DocumentReference<TeamType> | TeamType;
-    region: DocumentReference<Region> | Region;
     nacionality: DocumentReference<Nacionality> | Nacionality;
 };
