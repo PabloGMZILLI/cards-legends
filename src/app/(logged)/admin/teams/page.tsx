@@ -70,10 +70,9 @@ export default function TeamsPage() {
                     onEdit={handleEdit}
                     onDelete={handleDelete}
                     columns={[
-                        { key: 'name', label: 'Nome' },
                         {
                             key: 'logoUrl',
-                            label: 'Logo',
+                            label: '',
                             render: (team) =>
                                 team.logoUrl ? (
                                     <Image
@@ -87,6 +86,7 @@ export default function TeamsPage() {
                                     '-'
                                 ),
                         },
+                        { key: 'name', label: 'Nome' },
                     ]}
                 />
             )}

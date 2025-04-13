@@ -1,4 +1,5 @@
 import { db } from '@/lib/firebase';
+import { Nacionality } from '@/types/RoomTypes';
 import {
   addDoc,
   collection,
@@ -7,12 +8,14 @@ import {
   getDocs,
 } from 'firebase/firestore';
 
-export const getAllNacionalities = async () => {
+export const getAllNacionalities = async (): Promise<Nacionality[]> => {
   const snapshot = await getDocs(collection(db, 'nacionalities'));
-  return snapshot.docs.map((doc) => ({
+  const nacionalities = snapshot.docs.map((doc) => ({
     id: doc.id,
     ...doc.data(),
-  }));
+  })) as Nacionality[];
+
+  return nacionalities
 };
 
 export const createNacionality = async (name: string, icon: string) => {

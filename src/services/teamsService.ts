@@ -21,7 +21,8 @@ export const createTeam = async (data: {
     region: regionRef,
   };
 
-  return await addDoc(collection(db, 'teams'), team);
+  const docRef = await addDoc(collection(db, 'teams'), team);
+  return { id: docRef.id };
 };
 
 

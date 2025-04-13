@@ -8,7 +8,7 @@ import styles from '../styles/SelectPlayersStep.module.css';
 import { useAuth } from '@/context/AuthContext';
 import { Icon, Spinner } from '@/components';
 import { TeamPlayer } from '@/types/Team';
-import { getPlayersByTeam } from '@/services/playerService';
+import { getPlayersByTeam } from '@/services/playersService';
 
 export default function SelectPlayersStep({
   room,
