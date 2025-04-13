@@ -16,6 +16,7 @@ export default function CreateMatchPage() {
   const [championships, setChampionships] = useState<Option[]>([]);
   const [rounds, setRounds] = useState<Option[]>([]);
   const [teams, setTeams] = useState<Option[]>([]);
+  const [teamsSecondOption, setTeamsSecondOption] = useState<Option[]>([]);
   const [championshipId, setChampionshipId] = useState('');
   const [roundId, setRoundId] = useState('');
   const [teamAId, setTeamAId] = useState('');
@@ -101,7 +102,13 @@ export default function CreateMatchPage() {
         <Select
           label="Time A"
           value={teamAId}
-          onChange={(val) => setTeamAId(val as string)}
+          onChange={(val) => {
+            setTeamAId(val as string);
+            const selectedTeam = teams.find((team) => team.value === val);
+            if (selectedTeam) {
+              setTeamsSecondOption(teams.filter((team) => team.value !== selectedTeam.value));
+            }
+          }}
           options={teams}
         />
 
@@ -109,7 +116,7 @@ export default function CreateMatchPage() {
           label="Time B"
           value={teamBId}
           onChange={(val) => setTeamBId(val as string)}
-          options={teams}
+          options={teamsSecondOption}
         />
 
         <Button type="submit" disabled={loading}>
