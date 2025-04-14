@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 
-import { Link, Spinner } from '@/components';
+import { Button, Link, Spinner } from '@/components';
 
 import styles from './login.module.css';
 
@@ -26,7 +26,6 @@ export default function LoginPage() {
       });
 
       if (!res.ok) {
-        console.log('res ', res)
         const { message } = await res?.json();
         setError(message);
         return;
@@ -66,13 +65,13 @@ export default function LoginPage() {
           required
         />
         {error && <p className={styles.error}>{error}</p>}
-        <button type="submit" className={styles.button} disabled={loading}>
+        <Button className={styles.button} type='submit' variation='primary' disabled={loading} >
           {loading ? <Spinner size={20} /> : 'Entrar'}
-        </button>
+        </Button>
         <p className={styles.switchText}>
           Não tem conta?
           <Link href="/register">
-            Criar
+            Registrar-se
           </Link>
         </p>
       </form>

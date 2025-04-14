@@ -1,15 +1,18 @@
 'use client'
 
 import { useState } from "react";
-import { Link, Spinner } from "@/components";
+import { Button, Link, Spinner } from "@/components";
 import styles from './register.module.css';
+import { useRouter } from "next/navigation";
 
 export default function RegisterPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [name, setName] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const router = useRouter()
 
 
   const handleSignup = async (e: React.FormEvent) => {
@@ -26,14 +29,16 @@ export default function RegisterPage() {
     try {
       const res = await fetch('/api/signup', {
         method: 'POST',
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify({ email, name, password }),
       });
 
       if (!res.ok) {
-        const { message } = await res.json();
+        const { message } = await res.json();        
         setError(message);
         return;
       }
+
+      router.push('/login');
     } catch (err: unknown) {
       console.error(err);
       if (err instanceof Error) {
@@ -61,6 +66,14 @@ export default function RegisterPage() {
           required
         />
         <input
+          type="text"
+          placeholder="Nome"
+          className={styles.input}
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          required
+        />
+        <input
           type="password"
           placeholder="Senha"
           className={styles.input}
@@ -68,7 +81,7 @@ export default function RegisterPage() {
           onChange={(e) => setPassword(e.target.value)}
           required
         />
-                <input
+        <input
           type="password"
           placeholder="Confirme a Senha"
           className={styles.input}
@@ -76,9 +89,9 @@ export default function RegisterPage() {
           onChange={(e) => setConfirmPassword(e.target.value)}
           required
         />
-        <button type="submit" className={styles.button}>
+        <Button className={styles.button} type='submit' variation='primary' disabled={loading} >
           {loading ? <Spinner size={20} /> : 'Cadastrar'}
-        </button>
+        </Button>
         <p className={styles.switchText}>
           Já possui conta?
           <Link href="/login">

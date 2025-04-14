@@ -3,12 +3,12 @@
   justify-content: center;
   align-items: center;
   height: 100vh;
-  background-color: #0f172a;
+  background-color: var(--background-primary-color);
   /* fundo escuro */
 }
 
 .form {
-  background: #1e293b;
+  background: var(--background-secondary-color);
   padding: 2rem;
   border-radius: 1rem;
   width: 100%;
@@ -39,19 +39,6 @@
 
 .button {
   width: 100%;
-  padding: 0.75rem;
-  background: #3b82f6;
-  color: white;
-  border: none;
-  border-radius: 0.5rem;
-  cursor: pointer;
-  transition: background 0.3s ease;
-  display: flex;
-  justify-content: center;
-}
-
-.button:hover {
-  background: #2563eb;
 }
 
 .error {
@@ -64,4 +51,12 @@
   display: flex;
   gap: 0.5rem;
   margin-top: 1rem;
+}
+
+.switchText a {
+  color: var(--color-primary)
+}
+
+.switchText a:hover {
+  color: var(--color-primary-dark)
 }
