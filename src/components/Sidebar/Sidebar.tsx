@@ -3,10 +3,10 @@
 import Link from 'next/link';
 import { useState } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
-import { clearSessionCookie } from '@/utils/cookies';
 
 import styles from './Sidebar.module.css';
 import { ChevronDown, ChevronUp } from 'lucide-react';
+import { signOut } from 'next-auth/react';
 
 const menuItems = [
   { label: 'Salas', path: '/rooms' },
@@ -31,10 +31,10 @@ export default function Sidebar() {
   const pathname = usePathname();
   const router = useRouter();
   const [openMenus, setOpenMenus] = useState<Record<string, boolean>>({});
-
   const handleLogout = async () => {
-    await clearSessionCookie();
-    router.push('/login');
+    await signOut().then(() => {
+      router.push('/login');
+    })
   };
 
   const toggleSubmenu = (path: string) => {

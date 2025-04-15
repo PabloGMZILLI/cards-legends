@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation';
 import { Button, Link, Spinner } from '@/components';
 
 import styles from './login.module.css';
+import { signIn } from 'next-auth/react';
 
 export default function LoginPage() {
   const [email, setEmail] = useState('');
@@ -19,29 +20,17 @@ export default function LoginPage() {
     setLoading(true);
     setError('');
 
-    try {
-      const res = await fetch('/api/login', {
-        method: 'POST',
-        body: JSON.stringify({ email, password }),
-      });
-
-      if (!res.ok) {
-        const { message } = await res?.json();
-        setError(message);
-        return;
-      }
-
+    const result = await signIn('credentials', {
+      email,
+      password,
+      redirect: false,
+    });
+    if (result?.error) {
+      setError('Email ou senha inválidos.');
+    } else {
       router.push('/dashboard');
-    } catch (err: unknown) {
-      console.error(err);
-      if (err instanceof Error) {
-        setError(err.message);
-      } else {
-        setError('An unknown error occurred');
-      }
-    } finally {
-      setLoading(false);
     }
+    setLoading(false);
   };
 
   return (

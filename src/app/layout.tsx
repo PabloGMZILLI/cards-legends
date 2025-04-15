@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
-import { AuthProvider } from '@/context/AuthContext';
 
 import "./globals.css";
 import { Footer } from "@/components";
+import { AuthProvider } from "./providers/AuthProvider";
 
 export const metadata: Metadata = {
   title: "Cards Legends",
@@ -15,7 +15,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="pt-BR">
       <body>
         <AuthProvider>
           {children}

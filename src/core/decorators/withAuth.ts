@@ -1,14 +1,12 @@
-import { NextResponse } from 'next/server';
-import type { NextRequest } from 'next/server';
-import { getSessionCookie } from '@/utils/cookies';
+import { getToken } from 'next-auth/jwt';
+import { NextRequest, NextResponse } from 'next/server';
 
 export async function withAuth(request: NextRequest) {
-  const token = await getSessionCookie();
+  const token = await getToken({ req: request, secret: process.env.NEXTAUTH_SECRET });
 
   if (!token) {
-    // Usuário não está logado, redireciona para login
     return NextResponse.redirect(new URL('/login', request.url));
   }
 
-  return null; // Permite o acesso
+  return null; // acesso liberado
 }

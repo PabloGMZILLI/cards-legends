@@ -2,6 +2,7 @@
   "compilerOptions": {
     "target": "ES2017",
     "baseUrl": ".",
+    "typeRoots": ["./types", "./node_modules/@types"],
     "lib": [
       "dom",
       "dom.iterable",

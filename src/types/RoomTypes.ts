@@ -1,4 +1,4 @@
-import { User } from "firebase/auth";
+import { CustomUser } from ".";
 import { TeamPlayer, TeamType } from "./Team";
 import { DocumentReference } from "firebase/firestore";
 
@@ -11,8 +11,8 @@ export interface Room {
   name: string;
   region: string;
   roundIds: string[];
-  users: Partial<User>[];
-  specs: Partial<User>[];
+  users: CustomUser[];
+  specs: CustomUser[];
   leaderId: string;
   status: RoomStatus;
   currentStep: RoomStep;
@@ -28,7 +28,7 @@ export interface Room {
 export type UserVote = {
   roomId: string;
   teamPlayer: TeamPlayer;
-  user: Partial<User>;
+  user: CustomUser;
   score: number;
   roundIds: string[];
   team: TeamType;

@@ -1,41 +1,27 @@
 'use client';
 
-import { createContext, useContext, useEffect, useState } from 'react';
-import { onAuthStateChanged, User } from 'firebase/auth';
-import { auth } from '@/lib/firebase';
+import { createContext, useContext } from 'react';
+import { useSession } from 'next-auth/react';
+import { CustomUser } from '@/types';
 
 type AuthContextType = {
   isLoggedIn: boolean;
   loading: boolean;
-  user: User | null;
+  user: CustomUser | null; // você pode tipar melhor se tiver um tipo custom
 };
 
 const AuthContext = createContext<AuthContextType>({
   isLoggedIn: false,
   loading: true,
-  user: null
+  user: null,
 });
 
-export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [loading, setLoading] = useState(true);
-  const [user, setUser] = useState<User | null>(null);
+export const AuthProviderContext = ({ children }: { children: React.ReactNode }) => {
+  const { data: session, status } = useSession();
 
-
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
-      if (firebaseUser) {
-        setIsLoggedIn(true);
-        setUser(firebaseUser);
-      } else {
-        setIsLoggedIn(false);
-        setUser(null);
-      }
-      setLoading(false);
-    });
-
-    return () => unsubscribe(); // limpa listener
-  }, []);
+  const isLoggedIn = status === 'authenticated';
+  const loading = status === 'loading';
+  const user = session?.user ?? null;
 
   return (
     <AuthContext.Provider value={{ isLoggedIn, loading, user }}>

@@ -5,8 +5,8 @@ import styles from '../styles/LobbyStep.module.css';
 
 import { Icon, Spinner } from '@/components';
 import PlayerRoomCard from '../components/PlayerRoomCard';
-import { User } from 'firebase/auth';
 import { useAuth } from '@/context/AuthContext';
+import { CustomUser } from '@/types';
 
 export default function LobbyStep({
   room,
@@ -22,7 +22,7 @@ export default function LobbyStep({
   const isLeader = room.leaderId === user.uid;
 
   const handleKickPlayer = (id: string, type: RoomKeys) => {
-    const users = room[type] as User[];
+    const users = room[type] as CustomUser[];
 
     const filtered = users.filter(user => user.uid !== id);
     onUpdateRoom({ ...room, [type]: filtered });
@@ -68,10 +68,10 @@ export default function LobbyStep({
             const isMe = p.uid === user.uid;
 
             return (
-              p.uid && p.displayName && <PlayerRoomCard
+              p.uid && p.name && <PlayerRoomCard
                 key={p.uid}
                 id={p.uid}
-                name={p.displayName}
+                name={p.name}
                 type="participant"
                 isMe={isMe}
                 isLeader={isTheLeader}
@@ -94,10 +94,10 @@ export default function LobbyStep({
             const isTheLeader = s.uid === room.leaderId;
 
             return (
-              s.uid && s.displayName && <PlayerRoomCard
+              s.uid && s.name && <PlayerRoomCard
                 key={s.uid}
                 id={s.uid}
-                name={s.displayName}
+                name={s.name}
                 type="spec"
                 isMe={isMe}
                 isLeader={isTheLeader}
