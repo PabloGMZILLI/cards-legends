@@ -1,5 +1,3 @@
-// src/app/(logged)/admin/matches/page.tsx
-
 'use client';
 
 import { useEffect, useState } from 'react';
@@ -16,14 +14,12 @@ export default function MatchesPage() {
 
   const fetchMatches = async () => {
     try {
-       fetch('/api/matches').then(async (res) => {
-        if (!res.ok) {
-          throw new Error('Erro ao buscar partidas');
-        }
-        const data = await res.json();
-        setMatches(data);
-
-      });
+      const res = await fetch('/api/matches');
+      if (!res.ok) {
+        throw new Error('Erro ao buscar partidas');
+      }
+      const data = await res.json();
+      setMatches(data);
     } catch (error) {
       console.error('Erro ao buscar partidas:', error);
     } finally {
@@ -32,17 +28,17 @@ export default function MatchesPage() {
   };
 
   const handleDelete = async (match: MatchWithDetails) => {
-      const confirmed = confirm('Deseja mesmo deletar esta partida?');
-      if (!confirmed) return;
-      const { id } = match;
+    const confirmed = confirm('Deseja mesmo deletar esta partida?');
+    if (!confirmed) return;
+    const { id } = match;
 
-      await fetch(`/api/matches/${id}`, { method: 'DELETE' }).then((res) => {
-          if (!res.ok) {
-              console.error('Erro ao deletar partida:');
-              throw new Error('Erro ao deletar partida');
-          }
-          setMatches((prev) => prev.filter((m) => m.id !== id));
-      });
+    const res = await fetch(`/api/matches/${id}`, { method: 'DELETE' });
+    if (!res.ok) {
+      console.error('Erro ao deletar partida:');
+      throw new Error('Erro ao deletar partida');
+    }
+
+    setMatches((prev) => prev.filter((m) => m.id !== id));
   };
 
   useEffect(() => {
@@ -89,10 +85,15 @@ export default function MatchesPage() {
               },
             },
             {
-              key: 'championship',
-              label: 'Campeonato',
-              render: (match) => match.championshipData?.name || '-',
-            },
+              key: 'round',
+              label: 'Info',
+              render: (match) => { 
+                const split = match.roundData?.championshipData?.split
+                const year = match.roundData?.championshipData?.year
+                const number = match.roundData?.roundNumber
+                return `Rodada ${number} - Split ${split} - ${year}`
+              }
+            }
           ]}
         />
       )}

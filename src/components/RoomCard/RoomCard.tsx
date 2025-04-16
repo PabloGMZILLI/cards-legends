@@ -22,7 +22,6 @@ export default function RoomCard({ room }: { room: RoomCardProps }) {
       }}
     >
       <h2 className={styles.title}>{room.name}</h2>
-      <p className={styles.detail}>Host: {room.host}</p>
       <p className={styles.detail}>Jogadores: {room.players}</p>
       <p className={styles.detail}>Max Jogadores: {room.maxPlayers}</p>
     </div>

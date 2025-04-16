@@ -1,24 +1,26 @@
 import { CustomUser } from ".";
 import { TeamPlayer, TeamType } from "./Team";
-import { DocumentReference } from "firebase/firestore";
+import { DocumentReference, FieldValue } from "firebase/firestore";
 
 export type RoomStep = 'lobby' | 'selectTeam' | 'selectPlayer' | 'voting' | 'summary';
 
 export type RoomStatus = 'waiting' | 'inProgress' | 'finished';
 
 export interface Room {
-  uid: string;
+  id: string;
   name: string;
   region: string;
   roundIds: string[];
   users: CustomUser[];
   specs: CustomUser[];
-  leaderId: string;
+  host: string;
   status: RoomStatus;
   currentStep: RoomStep;
   nextStep?: RoomStep;
   selectedTeam?: TeamType;
   selectedPlayer?: TeamPlayer;
+  maxPlayers: number;
+  createdAt: FieldValue;
   voted?: {
     players?: string[];
     teams?: string[];
@@ -88,14 +90,12 @@ export type Match = {
   teamA: DocumentReference<TeamType>;
   teamB: DocumentReference<TeamType>;
   winner: 'teamA' | 'teamB' | null;
-  championship: DocumentReference<Championship>;
 };
 
 export type MatchWithDetails = Match & {
-  roundData?: Round;
+  roundData?: RoundWithChampionship;
   teamAData?: TeamType;
   teamBData?: TeamType;
-  championshipData?: Championship;
 }
 
 export type Region = {

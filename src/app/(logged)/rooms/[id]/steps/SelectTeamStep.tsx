@@ -8,7 +8,7 @@ import Image from 'next/image';
 import styles from '../styles/SelectTeamStep.module.css';
 import { useAuth } from '@/context/AuthContext';
 import { TeamType } from '@/types/Team';
-import { getTeamsFromRounds } from '@/services/teamsByReferences';
+import { getTeamsFromRounds } from '@/services/teamsService';
 
 type SelectTeamStepProps = {
     room: Room;
@@ -28,8 +28,11 @@ export default function SelectTeamStep({
     const { user, loading: userLoading } = useAuth();
 
     useEffect(() => {
+        console.log('Room: ', room)
         const fetchTeams = async () => {
             const teams = await getTeamsFromRounds(room.roundIds);
+            console.log('room.roundIds', room.roundIds)
+
             setTeams(teams);
             setLoading(false);
         };
@@ -41,7 +44,7 @@ export default function SelectTeamStep({
         return <Spinner center={true} />;
     }
 
-    const isLeader = room.leaderId === user.uid;
+    const isLeader = room.host === user.uid;
 
 
     if (!isLeader) {

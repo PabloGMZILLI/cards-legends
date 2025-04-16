@@ -55,8 +55,8 @@ export default function VotingStep({
                     teamPlayer: currentPlayer,
                     user: mockUser,
                     score: myScore,
-                    roundId: room.uid,
-                    roomId: room.uid,
+                    roundId: room.id,
+                    roomId: room.id,
                     roundIds: room.roundIds,
                     team: room.selectedPlayer?.team as TeamType,
                 },
@@ -79,9 +79,9 @@ export default function VotingStep({
             score: myScore,
             roundIds: room.roundIds,
             team: room.selectedTeam as TeamType,
-            roomId: room.uid,
+            roomId: room.id,
         });
-        await markPlayerAsVoted(room.uid, currentPlayer.uid);
+        await markPlayerAsVoted(room.id, currentPlayer.uid);
         onUpdateRoom({
             ...room,
             voted: {

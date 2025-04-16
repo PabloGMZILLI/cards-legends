@@ -145,7 +145,7 @@ export const mockRoom: Room = {
     specs: [
         mockUser4,
     ],
-    leaderId: '123',
+    host: '123',
     selectedTeam: mockTeams[0],
 };
 

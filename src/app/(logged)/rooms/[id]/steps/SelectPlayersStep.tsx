@@ -35,7 +35,7 @@ export default function SelectPlayersStep({
     return <Spinner center={true} />;
   }
 
-  const isLeader = room.leaderId === user.uid;
+  const isLeader = room.host === user.uid;
 
   const handleSelect = (uid: string) => {
     setSelectedPlayerId(uid);

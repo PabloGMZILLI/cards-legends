@@ -19,7 +19,7 @@ export default function LobbyStep({
     return <Spinner center={true} />;
   }
 
-  const isLeader = room.leaderId === user.uid;
+  const isLeader = room.host === user.uid;
 
   const handleKickPlayer = (id: string, type: RoomKeys) => {
     const users = room[type] as CustomUser[];
@@ -29,33 +29,30 @@ export default function LobbyStep({
   };
 
   const handleTransferLeadership = (teamPlayer: string) => {
-    onUpdateRoom({ ...room, leaderId: teamPlayer });
+    onUpdateRoom({ ...room, host: teamPlayer });
   };
 
-  const handleSwitchToParticipant = () => {
-    const updatedSpecs = room.specs.filter(s => s.uid !== user.uid);
-    const newPlayer = room.specs.find(s => s.uid === user.uid);
+  const handleSwitchRole = (isSwitchingToParticipant = true) => {
+    const sourceKey = isSwitchingToParticipant ? 'specs' : 'users';
+    const targetKey = isSwitchingToParticipant ? 'users' : 'specs';
 
-    if (newPlayer) {
-      onUpdateRoom({
-        ...room,
-        specs: updatedSpecs,
-        users: [...room.users, newPlayer],
-      });
+    const updatedSource = room[sourceKey].filter((member) => member.uid !== user.uid);
+    const switchingMember = room[sourceKey].find((member) => member.uid === user.uid);
+
+    console.log('room[sourceKey]: ', room[sourceKey])
+
+    if (!switchingMember) return;
+
+    const updatedTarget = room[targetKey].filter((member) => member.uid !== user.uid);
+
+    const updatedRoom = {
+      ...room,
+      [sourceKey]: updatedSource.filter((member, i, arr) => arr.findIndex((x) => x.uid === member.uid) === i),
+      [targetKey]: [...updatedTarget, switchingMember].filter((member, i, arr) => arr.findIndex((x) => x.uid === member.uid) === i),
     }
-  };
 
-  const handleSwitchToSpec = () => {
-    const updatedPlayers = room.users.filter(p => p.uid !== user.uid);
-    const newSpec = room.users.find(p => p.uid === user.uid);
 
-    if (newSpec) {
-      onUpdateRoom({
-        ...room,
-        users: updatedPlayers,
-        specs: [...room.specs, newSpec],
-      });
-    }
+    onUpdateRoom(updatedRoom);
   };
 
   return (
@@ -64,13 +61,13 @@ export default function LobbyStep({
         <h2 className={styles.sectionTitle}>Avaliadores</h2>
         <div className={styles.grid}>
           {room.users.map((p) => {
-            const isTheLeader = p.uid === room.leaderId;
+            const isTheLeader = p.uid === room.host;
             const isMe = p.uid === user.uid;
 
             return (
               p.uid && p.name && <PlayerRoomCard
                 key={p.uid}
-                id={p.uid}
+                uid={p.uid}
                 name={p.name}
                 type="participant"
                 isMe={isMe}
@@ -81,7 +78,7 @@ export default function LobbyStep({
               />
             );
           })}
-          <div className={styles.switchCard} onClick={handleSwitchToParticipant}>
+          <div className={styles.switchCard} onClick={() => handleSwitchRole(true)}>
             <Icon name="arrowRight" size={20} />
           </div>
         </div>
@@ -91,12 +88,12 @@ export default function LobbyStep({
         <div className={styles.grid}>
           {room.specs.map((s) => {
             const isMe = s.uid === user.uid;
-            const isTheLeader = s.uid === room.leaderId;
+            const isTheLeader = s.uid === room.host;
 
             return (
               s.uid && s.name && <PlayerRoomCard
                 key={s.uid}
-                id={s.uid}
+                uid={s.uid}
                 name={s.name}
                 type="spec"
                 isMe={isMe}
@@ -107,7 +104,7 @@ export default function LobbyStep({
               />
             );
           })}
-          <div className={styles.switchCard} onClick={handleSwitchToSpec}>
+          <div className={styles.switchCard} onClick={() => handleSwitchRole(false)}>
             <Icon name="arrowRight" size={20} />
           </div>
         </div>

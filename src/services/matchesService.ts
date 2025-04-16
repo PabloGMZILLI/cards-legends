@@ -7,8 +7,8 @@ import {
     addDoc,
     deleteDoc,
 } from 'firebase/firestore';
-import { Match, MatchWithDetails } from '@/types/RoomTypes';
-import { Championship, Round } from '@/types/RoomTypes';
+import { Match, MatchWithDetails, RoundWithChampionship } from '@/types/RoomTypes';
+import { Round } from '@/types/RoomTypes';
 import { TeamType } from '@/types/Team';
 import { createConverter } from '@/converters/firestoreConverter';
 
@@ -28,22 +28,34 @@ export const getMatches = async (): Promise<MatchWithDetails[]> => {
     for (const matchDoc of snapshot.docs) {
         const data = matchDoc.data() as Match;
 
-        const [roundSnap, teamASnap, teamBSnap, championshipSnap] = await Promise.all([
+        const [roundSnap, teamASnap, teamBSnap] = await Promise.all([
             getDoc(data.round),
             getDoc(data.teamA),
             getDoc(data.teamB),
-            getDoc(data.championship),
         ]);
+
+        const championshipSnap = roundSnap.exists() && roundSnap.data().championship
+            ? await getDoc(roundSnap.data().championship)
+            : null;
 
         matches.push({
             ...data,
             id: matchDoc.id,
-            roundData: roundSnap.exists() ? { ...roundSnap.data(), id: roundSnap.id } as Round : undefined,
-            teamAData: teamASnap.exists() ? { ...teamASnap.data(), id: teamASnap.id } as TeamType : undefined,
-            teamBData: teamBSnap.exists() ? { ...teamBSnap.data(), id: teamBSnap.id } as TeamType : undefined,
-            championshipData: championshipSnap.exists()
-                ? { ...championshipSnap.data(), id: championshipSnap.id } as Championship
-                : undefined,
+            roundData: roundSnap.exists()
+            ? {
+                  ...roundSnap.data(),
+                  id: roundSnap.id,
+                  championshipData: championshipSnap?.exists()
+                  ? { ...championshipSnap.data(), id: championshipSnap.id }
+                  : undefined,
+              } as RoundWithChampionship
+            : undefined,
+            teamAData: teamASnap.exists()
+            ? { ...teamASnap.data(), id: teamASnap.id } as TeamType
+            : undefined,
+            teamBData: teamBSnap.exists()
+            ? { ...teamBSnap.data(), id: teamBSnap.id } as TeamType
+            : undefined,
         });
     }
 
@@ -56,11 +68,7 @@ export const deleteMatch = async (id: string) => {
 };
 
 export const createMatch = async (data: CreateMatchPayload): Promise<void> => {
-    const { championshipId, roundId, teamAId, teamBId } = data;
-
-    const championshipRef = doc(db, 'championships', championshipId).withConverter(
-        createConverter<Championship>()
-    );
+    const { roundId, teamAId, teamBId } = data;
 
     const roundRef = doc(db, 'rounds', roundId).withConverter(
         createConverter<Round>()
@@ -75,7 +83,6 @@ export const createMatch = async (data: CreateMatchPayload): Promise<void> => {
     );
 
     const match: Omit<Match, 'id' | 'winner'> = {
-        championship: championshipRef,
         round: roundRef,
         teamA: teamARef,
         teamB: teamBRef,

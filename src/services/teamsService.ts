@@ -1,7 +1,7 @@
 import { db } from '@/lib/firebase';
 import { TeamType, TeamWithRegion } from '@/types/Team';
-import { Region } from '@/types/RoomTypes';
-import { addDoc, collection, deleteDoc, doc, getDoc, getDocs } from 'firebase/firestore';
+import { Match, Region } from '@/types/RoomTypes';
+import { addDoc, collection, deleteDoc, doc, DocumentReference, getDoc, getDocs, query, where } from 'firebase/firestore';
 import { createConverter } from '@/converters/firestoreConverter';
 
 export const createTeam = async (data: {
@@ -60,4 +60,41 @@ export const getTeams = async (): Promise<TeamWithRegion[]> => {
 export const deleteTeam = async (id: string) => {
   const ref = doc(db, 'teams', id);
   await deleteDoc(ref);
+};
+
+export const getTeamsFromRounds = async (roundIds: string[]): Promise<TeamType[]> => {
+  const roundRefs = roundIds.map((id) => doc(db, 'rounds', id));
+
+  const matchesQuery = query(
+    collection(db, 'matches'),
+    where('round', 'in', roundRefs)
+  );
+
+  const matchSnap = await getDocs(matchesQuery);
+  console.log('matchSnap', matchSnap)
+
+  const allTeamRefs: DocumentReference[] = [];
+
+  matchSnap.forEach((snap) => {
+    const data = snap.data() as Match;
+    if (data.teamA) allTeamRefs.push(data.teamA);
+    if (data.teamB) allTeamRefs.push(data.teamB);
+  });
+
+  const uniqueTeamRefs = Array.from(
+    new Map(allTeamRefs.map((ref) => [ref.id, ref])).values()
+  );
+
+  const teamSnaps = await Promise.all(uniqueTeamRefs.map((ref) => getDoc(ref)));
+
+  const teamMap = new Map<string, TeamType>();
+
+  teamSnaps.forEach((snap) => {
+    if (snap.exists()) {
+      const team = { id: snap.id, ...snap.data() } as TeamType;
+      teamMap.set(team.id, team);
+    }
+  });
+
+  return Array.from(teamMap.values());
 };
