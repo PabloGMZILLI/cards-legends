@@ -21,6 +21,7 @@ export type TeamPlayer = {
     image: string;
     team: DocumentReference<TeamType>;
     nacionality: DocumentReference<Nacionality>;
+    region: DocumentReference<Region>
 };
 
 export type TeamPlayerWithDetails = TeamPlayer & {

@@ -2,114 +2,91 @@
 
 import { useState } from 'react';
 import { Button, EditPlayerCard, Spinner } from '@/components';
-
 import styles from '../styles/VotingStep.module.css';
-import { mockVotes, mockUser } from '@/mocks';
-import { UserVote, VotingStepProps } from '@/types/RoomTypes';
+import { VotingStepProps } from '@/types/RoomTypes';
 import { TeamPlayer, TeamType } from '@/types/Team';
-import { saveVote } from '@/services/votes/saveVote';
 import { useAuth } from '@/context/AuthContext';
-import { markPlayerAsVoted } from '@/services/votes/markPlayerAsVoted';
+import { useTempVotes } from '@/hooks/useTempVotes';
+import { useResolvedPlayer } from '@/hooks/useResolvedPlayer';
 
-
-const mockIsLeader = true;
+import {
+    saveTempVote,
+    saveFinalVotes,
+    markPlayerAsVoted,
+} from '@/services/voteService';
 
 export default function VotingStep({
     room,
     nextStep,
     onUpdateRoom
 }: VotingStepProps) {
-    const [votes, setVotes] = useState<UserVote[]>(mockVotes);
     const [myScore, setMyScore] = useState(50);
     const { user, loading } = useAuth();
+    const currentPlayer = room.selectedPlayer as TeamPlayer;
+    const resolvedPlayer = useResolvedPlayer(currentPlayer);
+    const votes = useTempVotes(room.id, currentPlayer?.uid);
 
-    if (!user || loading) {
+    console.log('resolvedPlayer: ', resolvedPlayer)
+    if (!user || loading || !currentPlayer || !resolvedPlayer) {
         return <Spinner />;
     }
 
-    const currentPlayer = room.selectedPlayer as TeamPlayer;
-
-    const getPlayerVotes = (teamPlayer: TeamPlayer): UserVote[] => {
-        return votes.filter((v) => v.teamPlayer.uid === teamPlayer.uid);
-    };
-
-    const getScoreAverage = (teamPlayer: TeamPlayer): number => {
-        const playerVotes = getPlayerVotes(teamPlayer);
-        if (playerVotes.length === 0) return 0;
-        const total = playerVotes.reduce((sum, v) => sum + v.score, 0);
-        return Math.round(total / playerVotes.length);
-    };
-
-    const handleVoteChange = (value: number) => {
+    const handleVoteChange = async (value: number) => {
         setMyScore(value);
-    };
 
-    const handleSaveVote = async () => {
-        setVotes((prev) => {
-            const filtered = prev.filter(
-                (v) => !(v.teamPlayer === currentPlayer && v.user.uid === user.uid)
-            );
-            return [
-                ...filtered,
-                {
-                    teamPlayer: currentPlayer,
-                    user: mockUser,
-                    score: myScore,
-                    roundId: room.id,
-                    roomId: room.id,
-                    roundIds: room.roundIds,
-                    team: room.selectedPlayer?.team as TeamType,
-                },
-            ];
+        await saveTempVote(room.id, {
+            score: value,
+            user,
+            roundIds: room.roundIds,
+            roomId: room.id,
+            team: room.selectedTeam as TeamType,
+            teamPlayer: currentPlayer,
         });
     };
 
-    const hasEveryoneVoted = () => {
-        return getPlayerVotes(currentPlayer || '').length >= 3;
+    const getScoreAverage = (): number => {
+        if (votes.length === 0) return 0;
+        const total = votes.reduce((sum, v) => sum + v.score, 0);
+        return Math.round(total / votes.length);
     };
 
-    const alreadyVoted = votes.some(
-        (v) => v.teamPlayer === currentPlayer && v.user.uid === user.uid
-    );
+    const alreadyVoted = votes.some(v => v.user.uid === user.uid);
+    const hasEveryoneVoted = votes.length >= room.users.length;
+    const isLeader = room.host === user.uid;
 
     const handleNext = async () => {
-        await saveVote({
-            teamPlayer: currentPlayer,
-            user: user,
-            score: myScore,
-            roundIds: room.roundIds,
-            team: room.selectedTeam as TeamType,
-            roomId: room.id,
-        });
+        await saveFinalVotes(room.id, currentPlayer.uid);
         await markPlayerAsVoted(room.id, currentPlayer.uid);
+
         onUpdateRoom({
             ...room,
             voted: {
                 ...room.voted,
                 players: [...(room.voted?.players || []), currentPlayer.uid],
-            }
+            },
         });
+
         nextStep();
-    }
+    };
 
     return (
         <div className={styles.container}>
             <div className={styles.votingSection}>
                 <EditPlayerCard
-                    player={room.selectedPlayer as TeamPlayer}
+                    player={resolvedPlayer}
                     score={myScore}
                     onScoreChange={handleVoteChange}
-                    onSave={handleSaveVote}
                     voted={alreadyVoted}
-                    averageScore={getScoreAverage(currentPlayer)}
+                    averageScore={getScoreAverage()}
                 />
             </div>
+
             <p className={styles.voteStatus}>
-                Votos recebidos: {getPlayerVotes(currentPlayer).length} / 3
+                Votos recebidos: {votes.length} / {room.users.length}
             </p>
 
-            {mockIsLeader && (
-                <Button onClick={handleNext} disabled={!hasEveryoneVoted()}>
+            {isLeader && (
+                <Button onClick={handleNext} disabled={!hasEveryoneVoted}>
                     Próximo
                 </Button>
             )}

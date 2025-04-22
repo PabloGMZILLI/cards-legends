@@ -2,16 +2,21 @@
 
 import Image from 'next/image';
 import styles from './EditPlayerCard.module.css';
-import { PlayerCardProps } from './types';
-import Button from '../Button/Button';
+import { ResolvedPlayer } from '@/types/RoomTypes';
+
+interface PlayerCardProps {
+    player: ResolvedPlayer;
+    score: number;
+    averageScore: number;
+    voted: boolean;
+    onScoreChange: (newScore: number) => void;
+}
 
 export default function PlayerCard({
     player,
     score,
     averageScore,
-    voted,
     onScoreChange,
-    onSave,
 }: PlayerCardProps) {
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -22,6 +27,7 @@ export default function PlayerCard({
     const backgroundPath = `/images/backgrounds/${score >= 50 ? '1' : '2'}.png`;
     const framePath = `/images/frames/${score >= 50 ? '1' : '2'}.png`;
 
+    console.log('player: ', player)
     return (
         <div className={styles.cardWrapper}>
             <div className={styles.card}>
@@ -92,9 +98,6 @@ export default function PlayerCard({
                     </div>
                 </div>
             </div>
-            <Button className={styles.saveButton} onClick={() => onSave(score)}>
-                {voted ? 'Alterar Nota' : 'Salvar'}
-            </Button>
         </div>
     );
 }

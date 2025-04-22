@@ -6,6 +6,12 @@ export type RoomStep = 'lobby' | 'selectTeam' | 'selectPlayer' | 'voting' | 'sum
 
 export type RoomStatus = 'waiting' | 'inProgress' | 'finished';
 
+export type ResolvedPlayer = Omit<TeamPlayer, 'team' | 'nacionality' | 'region'> & {
+  team: TeamType;
+  nacionality: Nacionality;
+  region: Region;
+};
+
 export interface Room {
   id: string;
   name: string;
