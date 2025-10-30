@@ -2,7 +2,10 @@ import { getToken } from 'next-auth/jwt';
 import { NextRequest, NextResponse } from 'next/server';
 
 export async function withAuth(request: NextRequest) {
-  const token = await getToken({ req: request, secret: process.env.NEXTAUTH_SECRET });
+  const token = await getToken({
+    req: request,
+    secret: process.env.NEXTAUTH_SECRET, 
+  });
 
   const responseUrl = new URL('/login', request.url);
 
@@ -13,7 +16,10 @@ export async function withAuth(request: NextRequest) {
       ? '__Secure-next-auth.session-token'
       : 'next-auth.session-token';
 
-    response.cookies.set(cookieName, '', { maxAge: 0, path: '/' });
+    response.cookies.set(cookieName, '', {
+      maxAge: 0,
+      path: '/', 
+    });
 
     return response;
   }

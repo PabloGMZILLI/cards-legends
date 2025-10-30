@@ -1,32 +1,17 @@
 'use client';
 
 import Image from 'next/image';
-import styles from './EditPlayerCard.module.css';
+import styles from './PlayerCard.module.css';
 import { ResolvedPlayer } from '@/types/RoomTypes';
 
 interface PlayerCardProps {
-    player: ResolvedPlayer;
-    score: number | undefined;
-    averageScore: number;
-    voted: boolean;
-    onScoreChange: (newScore: number) => void;
+  player: ResolvedPlayer;
+  averageScore: number;
 }
 
-export default function PlayerCard({
-  player,
-  score,
-  averageScore,
-  onScoreChange,
-}: PlayerCardProps) {
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = Number(e.target.value);
-    onScoreChange(value);
-  };
-  const cardOrnamentName = score && score >= 50 ? '1' : '2'
-
-  const backgroundPath = `/images/backgrounds/${cardOrnamentName}.png`;
-  const framePath = `/images/frames/${cardOrnamentName}.png`;
+export default function PlayerCard({ player, averageScore }: PlayerCardProps) {
+  const backgroundPath = `/images/backgrounds/${averageScore >= 50 ? '1' : '2'}.png`;
+  const framePath = `/images/frames/${averageScore >= 50 ? '1' : '2'}.png`;
 
   return (
     <div className={styles.cardWrapper}>
@@ -50,21 +35,21 @@ export default function PlayerCard({
 
           <div className={styles.badges}>
             <Image
-              src={player?.team && 'logoUrl' in player.team ? player.team.logoUrl : ''}
+              src={player.team.logoUrl}
               alt="Time"
               width={32}
               height={32}
               className={styles.badgeIcon}
             />
             <Image
-              src={'icon' in player.nacionality ? player.nacionality.icon : ''}
+              src={player.nacionality.icon}
               alt="País"
               width={32}
               height={32}
               className={styles.badgeIcon}
             />
             <Image
-              src={'icon' in player.region ? player.region.icon : ''}
+              src={player.region.icon}
               alt="Região"
               width={32}
               height={32}
@@ -85,16 +70,6 @@ export default function PlayerCard({
 
             <h3 className={styles.name}>{player.name}</h3>
             <span className={styles.role}>{player.role}</span>
-
-            <input
-              type="range"
-              min={0}
-              max={100}
-              value={score ?? 0}
-              onChange={handleChange}
-              className={styles.slider}
-            />
-            {score && <p className={styles.scoreValue}>Sua nota: {score}</p>}
           </div>
         </div>
       </div>

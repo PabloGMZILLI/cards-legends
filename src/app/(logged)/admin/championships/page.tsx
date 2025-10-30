@@ -63,9 +63,18 @@ export default function ChampionshipsPage() {
           onEdit={handleEdit}
           onDelete={handleDelete}
           columns={[
-            { key: 'name', label: 'Nome' },
-            { key: 'split', label: 'Split' },
-            { key: 'year', label: 'Ano' },
+            {
+              key: 'name',
+              label: 'Nome', 
+            },
+            {
+              key: 'split',
+              label: 'Split', 
+            },
+            {
+              key: 'year',
+              label: 'Ano', 
+            },
             {
               key: 'region',
               label: 'Região',

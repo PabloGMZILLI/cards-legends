@@ -29,7 +29,11 @@ export default function RegisterPage() {
     try {
       const res = await fetch('/api/signup', {
         method: 'POST',
-        body: JSON.stringify({ email, name, password }),
+        body: JSON.stringify({
+          email,
+          name,
+          password, 
+        }),
       });
 
       if (!res.ok) {

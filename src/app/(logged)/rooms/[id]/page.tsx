@@ -24,7 +24,10 @@ export default function RoomPage() {
     const unsub = onSnapshot(doc(db, 'rooms', roomId), (docSnap) => {
       if (docSnap.exists()) {
         const data = docSnap.data() as Room;
-        setRoom({ ...data, id: docSnap.id });
+        setRoom({
+          ...data,
+          id: docSnap.id, 
+        });
         setCurrentStep(data.currentStep || 'lobby');
       }
     });
@@ -41,9 +44,7 @@ export default function RoomPage() {
 
       if (isInUsers || isInSpecs) return;
 
-      await updateRoom({
-        users: [...room.users, user],
-      });
+      await updateRoom({ users: [...room.users, user] });
     };
 
     joinRoom();

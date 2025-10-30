@@ -16,7 +16,13 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
     }
 
-    await createRound({ name, roundNumber, startDate, endDate, championshipId });
+    await createRound({
+      name,
+      roundNumber,
+      startDate,
+      endDate,
+      championshipId, 
+    });
 
     return NextResponse.json({ message: 'Round created successfully' }, { status: 201 });
   } catch (error) {

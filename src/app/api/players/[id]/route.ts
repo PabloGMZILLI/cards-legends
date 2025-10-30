@@ -28,7 +28,13 @@ export async function PUT(request: NextRequest, context: { params: { id: string 
       return NextResponse.json({ error: 'Dados obrigatórios faltando.' }, { status: 400 });
     }
 
-    await updatePlayer(id, { name, image, role, teamId, nacionalityId });
+    await updatePlayer(id, {
+      name,
+      image,
+      role,
+      teamId,
+      nacionalityId, 
+    });
 
     return NextResponse.json({ success: true });
   } catch (error) {

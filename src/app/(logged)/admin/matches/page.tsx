@@ -92,8 +92,8 @@ export default function MatchesPage() {
                 const year = match.roundData?.championshipData?.year
                 const number = match.roundData?.roundNumber
                 return `Rodada ${number} - Split ${split} - ${year}`
-              }
-            }
+              },
+            },
           ]}
         />
       )}

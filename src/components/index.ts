@@ -1,6 +1,4 @@
 export { default as Footer } from './Footer/Footer';
-export { default as WelcomeMessage } from './WelcomeMessage/WelcomeMessage';
-export { default as LoremSection } from './LoremSection/LoremSection';
 export { default as Spinner } from './Spinner/Spinner';
 export { default as Link } from './Link/Link';
 export { default as RoomCard } from './RoomCard/RoomCard';
@@ -10,3 +8,4 @@ export { default as Input } from './Input/Input';
 export { default as Select } from './Select/Select';
 export { default as Icon } from './Icon/Icon';
 export { default as DataTable } from './DataTable/DataTable';
+export { default as PlayerCard } from './PlayerCard/PlayerCard';

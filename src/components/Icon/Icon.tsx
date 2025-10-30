@@ -13,35 +13,35 @@ interface DefaultIconProps extends LucideProps {
 };
 
 const iconMap: Record<IconName, LucideIcon> = {
-    crown: Crown,
-    x: X,
-    user: User,
-    trash: Trash2,
-    arrowRight: ArrowRight,
-    arrowUp: ArrowUp,
-    arrowDown: ArrowDown,
-    check: Check,
+  crown: Crown,
+  x: X,
+  user: User,
+  trash: Trash2,
+  arrowRight: ArrowRight,
+  arrowUp: ArrowUp,
+  arrowDown: ArrowDown,
+  check: Check,
 };
 
 export default function DefaultIcon({
-    name,
-    size = 18,
-    className = '',
-    title,
-    hasAction = false,
-    ...props
+  name,
+  size = 18,
+  className = '',
+  title,
+  hasAction = false,
+  ...props
 }: DefaultIconProps) {
-    const IconComponent = iconMap[name];
-    const iconClass = className ? className : styles.icon 
+  const IconComponent = iconMap[name];
+  const iconClass = className ? className : styles.icon 
 
-    if (!IconComponent) {
-        console.error(`Icon "${name}" not found`);
-        return null;
-    }
+  if (!IconComponent) {
+    console.error(`Icon "${name}" not found`);
+    return null;
+  }
 
-    return (
-        <span className={`${styles.iconWrapper} ${hasAction ? styles.iconWithAction : '' }`} title={title}>
-            <IconComponent size={size} className={iconClass} {...props} />
-        </span>
-    );
+  return (
+    <span className={`${styles.iconWrapper} ${hasAction ? styles.iconWithAction : '' }`} title={title}>
+      <IconComponent size={size} className={iconClass} {...props} />
+    </span>
+  );
 }

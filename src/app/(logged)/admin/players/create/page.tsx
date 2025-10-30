@@ -22,12 +22,30 @@ export default function CreatePlayerPage() {
   const router = useRouter();
 
   const roles: Option[] = [
-    { label: 'Top', value: 'Top' },
-    { label: 'Jungle', value: 'Jungle' },
-    { label: 'Mid', value: 'Mid' },
-    { label: 'ADC', value: 'ADC' },
-    { label: 'Support', value: 'Support' },
-    { label: 'Head Coach', value: 'HeadCoach' },
+    {
+      label: 'Top',
+      value: 'Top', 
+    },
+    {
+      label: 'Jungle',
+      value: 'Jungle', 
+    },
+    {
+      label: 'Mid',
+      value: 'Mid', 
+    },
+    {
+      label: 'ADC',
+      value: 'ADC', 
+    },
+    {
+      label: 'Support',
+      value: 'Support', 
+    },
+    {
+      label: 'Head Coach',
+      value: 'HeadCoach', 
+    },
   ];
 
   useEffect(() => {

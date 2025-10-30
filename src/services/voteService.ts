@@ -1,4 +1,7 @@
 import { db } from '@/lib/firebase';
+import { CustomUser } from '@/types';
+import { UserVote } from '@/types/RoomTypes';
+import { TeamPlayer, TeamType } from '@/types/Team';
 import {
   doc,
   getDoc,
@@ -7,10 +10,8 @@ import {
   getDocs,
   setDoc,
   deleteDoc,
+  Timestamp,
 } from 'firebase/firestore';
-import { UserVote } from '@/types/RoomTypes';
-import { TeamPlayer, TeamType } from '@/types/Team';
-import { CustomUser } from '@/types';
 
 export const markPlayerAsVoted = async (roomId: string, playerId: string) => {
   const roomRef = doc(db, 'rooms', roomId);
@@ -22,9 +23,7 @@ export const markPlayerAsVoted = async (roomId: string, playerId: string) => {
   const players = data.voted?.players || [];
 
   if (!players.includes(playerId)) {
-    await updateDoc(roomRef, {
-      'voted.players': [...players, playerId],
-    });
+    await updateDoc(roomRef, { 'voted.players': [...players, playerId] });
   }
 };
 
@@ -37,7 +36,7 @@ export const saveTempVote = async (
     roundIds: string[];
     team: TeamType;
     roomId: string;
-  }
+  },
 ) => {
   const voteRef = doc(db, `rooms/${roomId}/votesTemp`, vote.user.uid);
   await setDoc(voteRef, vote);
@@ -45,7 +44,7 @@ export const saveTempVote = async (
 
 export const getTempVotesByPlayer = async (
   roomId: string,
-  playerId: string
+  playerId: string,
 ): Promise<UserVote[]> => {
   const snap = await getDocs(collection(db, `rooms/${roomId}/votesTemp`));
   return snap.docs
@@ -53,13 +52,22 @@ export const getTempVotesByPlayer = async (
     .filter((v) => v.teamPlayer.uid === playerId);
 };
 
-export const saveFinalVotes = async (roomId: string, playerId: string) => {
+export const saveFinalVotes = async (roomId: string, teamPlayerId: string) => {
   const tempVotesSnap = await getDocs(collection(db, `rooms/${roomId}/votesTemp`));
 
   const saveOps = tempVotesSnap.docs.map((docSnap) => {
     const vote = docSnap.data();
-    const finalRef = doc(db, 'votes', `${roomId}_${vote.user.uid}_${playerId}`);
-    return setDoc(finalRef, vote);
+    const finalRef = doc(db, 'votes', `${roomId}_${vote.user.uid}_${teamPlayerId}`);
+
+    return setDoc(finalRef, {
+      roomId,
+      userId: vote.user.uid,
+      teamPlayerId,
+      teamId: vote.team.id,
+      roundIds: vote.roundIds,
+      score: vote.score,
+      createdAt: Timestamp.now(),
+    });
   });
 
   const deleteOps = tempVotesSnap.docs.map((docSnap) => deleteDoc(docSnap.ref));

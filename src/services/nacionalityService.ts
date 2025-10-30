@@ -20,8 +20,15 @@ export const getAllNacionalities = async (): Promise<Nacionality[]> => {
 
 export const createNacionality = async (name: string, icon: string) => {
   const ref = collection(db, 'nacionalities');
-  const docRef = await addDoc(ref, { name, icon });
-  return { id: docRef.id, name, icon };
+  const docRef = await addDoc(ref, {
+    name,
+    icon, 
+  });
+  return {
+    id: docRef.id,
+    name,
+    icon, 
+  };
 };
 
 export const deleteNacionality = async (id: string) => {

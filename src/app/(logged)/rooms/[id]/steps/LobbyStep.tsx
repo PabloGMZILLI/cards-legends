@@ -25,11 +25,17 @@ export default function LobbyStep({
     const users = room[type] as CustomUser[];
 
     const filtered = users.filter(user => user.uid !== id);
-    onUpdateRoom({ ...room, [type]: filtered });
+    onUpdateRoom({
+      ...room,
+      [type]: filtered, 
+    });
   };
 
   const handleTransferLeadership = (teamPlayer: string) => {
-    onUpdateRoom({ ...room, host: teamPlayer });
+    onUpdateRoom({
+      ...room,
+      host: teamPlayer, 
+    });
   };
 
   const handleSwitchRole = (isSwitchingToParticipant = true) => {

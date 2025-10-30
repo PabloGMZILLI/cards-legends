@@ -10,8 +10,8 @@ export function createConverter<T extends { id?: string }>(): FirestoreDataConve
     fromFirestore(snapshot: QueryDocumentSnapshot, options: SnapshotOptions): T {
       const data = snapshot.data(options);
       return {
-          ...data,
-          id: snapshot.id,
+        ...data,
+        id: snapshot.id,
       } as T;
     },
   };

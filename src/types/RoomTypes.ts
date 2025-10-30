@@ -42,6 +42,16 @@ export type UserVote = {
   team: TeamType;
 };
 
+export type UserVoteFinal = {
+  roomId: string;
+  userId: string;
+  teamPlayerId: string;
+  teamId: string;
+  roundIds: string[];
+  score: number;
+  createdAt: Date;
+};
+
 export type RoomKeys = keyof Room;
 
 export interface LobbyStepProps {

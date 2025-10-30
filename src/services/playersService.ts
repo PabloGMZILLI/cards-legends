@@ -95,12 +95,18 @@ export const getPlayersWithDetails = async (): Promise<TeamPlayerWithDetails[]> 
       const teamSnap = await getDoc(playerData.team);
 
       if (teamSnap.exists()) {
-        teamData = { ...teamSnap.data(), id: teamSnap.id } as TeamType;
+        teamData = {
+          ...teamSnap.data(),
+          id: teamSnap.id, 
+        } as TeamType;
       }
 
       const nacionalitySnap = await getDoc(playerData.nacionality);
       if (nacionalitySnap.exists()) {
-        nacionalityData = { ...nacionalitySnap.data(), id: nacionalitySnap.id } as Nacionality;
+        nacionalityData = {
+          ...nacionalitySnap.data(),
+          id: nacionalitySnap.id, 
+        } as Nacionality;
       }
     } catch (err) {
       console.warn('Erro ao carregar dados relacionados ao jogador', err);
@@ -125,11 +131,11 @@ export const updatePlayer = async (
     role: TeamPlayer['role'];
     teamId: string;
     nacionalityId: string;
-  }
+  },
 ): Promise<void> => {
   const teamRef = doc(db, 'teams', data.teamId).withConverter(createConverter<TeamType>());
   const nacionalityRef = doc(db, 'nacionalities', data.nacionalityId).withConverter(
-    createConverter<Nacionality>()
+    createConverter<Nacionality>(),
   );
 
   const playerRef = doc(db, 'teamPlayers', id);

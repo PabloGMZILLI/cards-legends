@@ -19,7 +19,10 @@ export default function CreateNacionalityPage() {
     try {
       await fetch('/api/nacionalities', {
         method: 'POST',
-        body: JSON.stringify({ name, icon }),
+        body: JSON.stringify({
+          name,
+          icon, 
+        }),
       });
 
       router.push('/admin/nacionalities');

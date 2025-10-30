@@ -10,7 +10,10 @@ export const getRoundsByIds = async (roundIds: string[]): Promise<Round[]> => {
   for (const id of roundIds) {
     const roundSnap: DocumentData = await getDoc(doc(db, 'rounds', id));
     if (roundSnap.exists()) {
-      rounds.push({ ...roundSnap.data(), id: roundSnap.id } as Round);
+      rounds.push({
+        ...roundSnap.data(),
+        id: roundSnap.id, 
+      } as Round);
     }
   }
 
@@ -29,7 +32,10 @@ export const getRounds = async (): Promise<RoundWithChampionship[]> => {
     try {
       const champSnap = await getDoc(data.championship);
       if (champSnap.exists()) {
-        championshipData = {...champSnap.data(), id: champSnap.id } as Championship;
+        championshipData = {
+          ...champSnap.data(),
+          id: champSnap.id, 
+        } as Championship;
       }
     } catch (err) {
       console.warn('Erro ao buscar campeonato:', err);
@@ -76,9 +82,12 @@ export const deleteRound = async (roundId: string) => {
 export const getRoundsByChampionship = async (championshipId: string): Promise<Round[]> => {
   const q = query(
     collection(db, 'rounds').withConverter(createConverter<Round>()),
-    where('championship', '==', doc(db, 'championships', championshipId))
+    where('championship', '==', doc(db, 'championships', championshipId)),
   );
 
   const snapshot = await getDocs(q);
-  return snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
+  return snapshot.docs.map((doc) => ({
+    ...doc.data(),
+    id: doc.id, 
+  }));
 };

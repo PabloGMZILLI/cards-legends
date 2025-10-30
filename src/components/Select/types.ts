@@ -4,7 +4,7 @@ export type Option = {
 };
 
 export type SelectProps = {
-    label: string;
+    label?: string;
     options: Option[];
     value: string | string[];
     onChange: (value: string | string[]) => void;

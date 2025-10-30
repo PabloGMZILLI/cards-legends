@@ -9,20 +9,50 @@ import { ChevronDown, ChevronUp } from 'lucide-react';
 import { signOut } from 'next-auth/react';
 
 const menuItems = [
-  { label: 'Salas', path: '/rooms' },
-  { label: 'Estatísticas', path: '/stats' },
-  { label: 'Perfil', path: '/profile' },
+  {
+    label: 'Salas',
+    path: '/rooms', 
+  },
+  {
+    label: 'Resultados',
+    path: '/results', 
+  },
+  {
+    label: 'Perfil',
+    path: '/profile', 
+  },
   {
     label: 'Configurações',
     path: '/settings',
     subItems: [
-      { label: 'Regiões', path: '/admin/regions' },
-      { label: 'Nacionalidades', path: '/admin/nacionalities' },
-      { label: 'Times', path: '/admin/teams' },
-      { label: 'Jogadores', path: '/admin/players' },
-      { label: 'Rodadas', path: '/admin/rounds' },
-      { label: 'Partidas', path: '/admin/matches' },
-      { label: 'Campeonatos', path: '/admin/championships' },
+      {
+        label: 'Regiões',
+        path: '/admin/regions', 
+      },
+      {
+        label: 'Nacionalidades',
+        path: '/admin/nacionalities', 
+      },
+      {
+        label: 'Times',
+        path: '/admin/teams', 
+      },
+      {
+        label: 'Jogadores',
+        path: '/admin/players', 
+      },
+      {
+        label: 'Rodadas',
+        path: '/admin/rounds', 
+      },
+      {
+        label: 'Partidas',
+        path: '/admin/matches', 
+      },
+      {
+        label: 'Campeonatos',
+        path: '/admin/championships', 
+      },
     ],
   },
 ];
@@ -38,7 +68,10 @@ export default function Sidebar() {
   };
 
   const toggleSubmenu = (path: string) => {
-    setOpenMenus((prev) => ({ ...prev, [path]: !prev[path] }));
+    setOpenMenus((prev) => ({
+      ...prev,
+      [path]: !prev[path], 
+    }));
   };
 
   return (

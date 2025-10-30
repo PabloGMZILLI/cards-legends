@@ -84,7 +84,10 @@ export default function CreateRoomPage() {
 
           <Select
             label="Região"
-            options={regions.map((r) => ({ label: r.name, value: r.id }))}
+            options={regions.map((r) => ({
+              label: r.name,
+              value: r.id, 
+            }))}
             value={regionId}
             onChange={(val) => setRegionId(val as string)}
             placeholder="Selecione a região"
@@ -92,7 +95,10 @@ export default function CreateRoomPage() {
 
           <Select
             label="Rodadas"
-            options={rounds.map((r) => ({ label: r.name, value: r.id }))}
+            options={rounds.map((r) => ({
+              label: r.name,
+              value: r.id, 
+            }))}
             value={roundIds}
             onChange={(val) => setRoundIds(Array.isArray(val) ? val : [])}
             placeholder="Selecione as rodadas"

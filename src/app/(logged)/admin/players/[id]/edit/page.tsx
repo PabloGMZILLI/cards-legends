@@ -14,12 +14,30 @@ import { TeamPlayerRole } from '@/types/Team';
 import styles from '../../create/CreatePlayerPage.module.css';
 
 const roles: Option[] = [
-  { label: 'Top', value: 'Top' },
-  { label: 'Jungle', value: 'Jungle' },
-  { label: 'Mid', value: 'Mid' },
-  { label: 'ADC', value: 'ADC' },
-  { label: 'Support', value: 'Support' },
-  { label: 'Head Coach', value: 'HeadCoach' },
+  {
+    label: 'Top',
+    value: 'Top', 
+  },
+  {
+    label: 'Jungle',
+    value: 'Jungle', 
+  },
+  {
+    label: 'Mid',
+    value: 'Mid', 
+  },
+  {
+    label: 'ADC',
+    value: 'ADC', 
+  },
+  {
+    label: 'Support',
+    value: 'Support', 
+  },
+  {
+    label: 'Head Coach',
+    value: 'HeadCoach', 
+  },
 ];
 
 export default function EditPlayerPage() {
@@ -50,11 +68,17 @@ export default function EditPlayerPage() {
     });
 
     getTeams().then((data) => {
-      setTeams(data.map((team) => ({ label: team.name, value: team.id })));
+      setTeams(data.map((team) => ({
+        label: team.name,
+        value: team.id, 
+      })));
     });
 
     getAllNacionalities().then((data) => {
-      setNacionalities(data.map((nat) => ({ label: nat.name, value: nat.id })));
+      setNacionalities(data.map((nat) => ({
+        label: nat.name,
+        value: nat.id, 
+      })));
     });
 
     setLoading(false);
@@ -69,7 +93,13 @@ export default function EditPlayerPage() {
     try {
       await fetch(`/api/players/${id}`, {
         method: 'PUT',
-        body: JSON.stringify({ name, image, role, teamId, nacionalityId }),
+        body: JSON.stringify({
+          name,
+          image,
+          role,
+          teamId,
+          nacionalityId, 
+        }),
       }).then((res) => {
         if (!res.ok) {
           throw new Error('Erro ao atualizar jogador');

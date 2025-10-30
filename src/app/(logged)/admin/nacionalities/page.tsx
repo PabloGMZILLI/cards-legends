@@ -33,9 +33,7 @@ export default function NacionalitiesPage() {
     if (!confirm) return;
 
     try {
-      await fetch(`/api/nacionalities/${item.id}`, {
-        method: 'DELETE',
-      });
+      await fetch(`/api/nacionalities/${item.id}`, { method: 'DELETE' });
       setNacionalities((prev) => prev.filter((i) => i.id !== item.id));
     } catch (err) {
       console.error('Erro ao deletar:', err);
@@ -76,7 +74,10 @@ export default function NacionalitiesPage() {
                   '-'
                 ),
             },
-            { key: 'name', label: 'Nome' },
+            {
+              key: 'name',
+              label: 'Nome', 
+            },
           ]}
         />
       )}

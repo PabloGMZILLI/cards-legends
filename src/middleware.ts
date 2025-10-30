@@ -3,38 +3,38 @@ import { withGuestOnly } from '@/core/decorators/withGuestOnly';
 import type { NextRequest } from 'next/server';
 
 export async function middleware(request: NextRequest) {
-    const pathname = request.nextUrl.pathname;
+  const pathname = request.nextUrl.pathname;
 
-    const authenticatedRoutes = [
-        '/dashboard',
-        '/profile',
-    ];
+  const authenticatedRoutes = [
+    '/dashboard',
+    '/profile',
+  ];
 
-    const publicRoutes = [
-        '/login',
-        '/signup',
-    ];
+  const publicRoutes = [
+    '/login',
+    '/signup',
+  ];
 
-    // Protege rotas privadas
-    if (authenticatedRoutes.some(route => pathname.startsWith(route))) {
-        const authRedirect = await withAuth(request);
-        if (authRedirect) return authRedirect;
-      }
+  // Protege rotas privadas
+  if (authenticatedRoutes.some(route => pathname.startsWith(route))) {
+    const authRedirect = await withAuth(request);
+    if (authRedirect) return authRedirect;
+  }
 
-    // Impede usuário logado de acessar login/register
-    if (publicRoutes.includes(pathname)) {
-        const guestRedirect = await withGuestOnly(request);
-        if (guestRedirect) return guestRedirect;
-      }
+  // Impede usuário logado de acessar login/register
+  if (publicRoutes.includes(pathname)) {
+    const guestRedirect = await withGuestOnly(request);
+    if (guestRedirect) return guestRedirect;
+  }
 
-    return null;
+  return null;
 }
 
 export const config = {
-    matcher: [
-        '/login',
-        '/signup',
-        '/dashboard/:path*',
-        '/profile/:path*',
-    ],
+  matcher: [
+    '/login',
+    '/signup',
+    '/dashboard/:path*',
+    '/profile/:path*',
+  ],
 };

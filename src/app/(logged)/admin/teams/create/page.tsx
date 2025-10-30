@@ -44,11 +44,15 @@ export default function CreateTeamPage() {
 
     fetch('/api/teams', {
       method: 'POST',
-      body: JSON.stringify({ name, logoUrl, regionId }),
+      body: JSON.stringify({
+        name,
+        logoUrl,
+        regionId, 
+      }),
     })
       .then((res) => {
         if (!res.ok) {
-        throw new Error('Erro ao criar time');
+          throw new Error('Erro ao criar time');
         }
         router.push('/admin/teams');
       })

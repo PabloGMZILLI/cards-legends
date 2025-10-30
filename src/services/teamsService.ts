@@ -12,7 +12,7 @@ export const createTeam = async (data: {
   const { name, logoUrl, regionId } = data;
 
   const regionRef = doc(db, 'regions', regionId).withConverter(
-    createConverter<Region>()
+    createConverter<Region>(),
   );
 
   const team: Omit<TeamType, 'id'> = {
@@ -67,7 +67,7 @@ export const getTeamsFromRounds = async (roundIds: string[]): Promise<TeamType[]
 
   const matchesQuery = query(
     collection(db, 'matches'),
-    where('round', 'in', roundRefs)
+    where('round', 'in', roundRefs),
   );
 
   const matchSnap = await getDocs(matchesQuery);
@@ -82,7 +82,7 @@ export const getTeamsFromRounds = async (roundIds: string[]): Promise<TeamType[]
   });
 
   const uniqueTeamRefs = Array.from(
-    new Map(allTeamRefs.map((ref) => [ref.id, ref])).values()
+    new Map(allTeamRefs.map((ref) => [ref.id, ref])).values(),
   );
 
   const teamSnaps = await Promise.all(uniqueTeamRefs.map((ref) => getDoc(ref)));
@@ -91,7 +91,10 @@ export const getTeamsFromRounds = async (roundIds: string[]): Promise<TeamType[]
 
   teamSnaps.forEach((snap) => {
     if (snap.exists()) {
-      const team = { id: snap.id, ...snap.data() } as TeamType;
+      const team = {
+        id: snap.id,
+        ...snap.data(), 
+      } as TeamType;
       teamMap.set(team.id, team);
     }
   });

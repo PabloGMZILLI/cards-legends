@@ -39,9 +39,18 @@ export const useResolvedPlayer = (player: TeamPlayer | null) => {
 
         setResolved({
           ...player,
-          team: { ...teamSnap.data(), id: teamSnap.id } as TeamType,
-          nacionality: { ...natSnap.data(), id: natSnap.id } as Nacionality,
-          region: { ...regionSnap.data(), id: regionSnap.id } as Region,
+          team: {
+            ...teamSnap.data(),
+            id: teamSnap.id, 
+          } as TeamType,
+          nacionality: {
+            ...natSnap.data(),
+            id: natSnap.id, 
+          } as Nacionality,
+          region: {
+            ...regionSnap.data(),
+            id: regionSnap.id, 
+          } as Region,
         });
       } catch (err) {
         console.error('Erro ao resolver jogador:', err);

@@ -20,7 +20,10 @@ export default function CreateRegionPage() {
     try {
       await fetch('/api/regions', {
         method: 'POST',
-        body: JSON.stringify({ name, icon }),
+        body: JSON.stringify({
+          name,
+          icon, 
+        }),
       });
 
       router.push('/admin/regions');

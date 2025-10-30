@@ -5,7 +5,7 @@ export type TeamType = {
     id: string;
     name: string;
     logoUrl: string;
-    region: DocumentReference<Region>;
+    region: DocumentReference<Region> | Region;
 };
 
 export type TeamWithRegion = TeamType & {

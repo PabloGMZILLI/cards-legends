@@ -11,7 +11,10 @@ export default function Spinner({ size = 24, center = false }: { size?: number, 
     >
       <svg
         className="animate-spin text-white"
-        style={{ width: size, height: size }}
+        style={{
+          width: size,
+          height: size, 
+        }}
         xmlns="http://www.w3.org/2000/svg"
         fill="none"
         viewBox="0 0 24 24"

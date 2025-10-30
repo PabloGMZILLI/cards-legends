@@ -16,7 +16,12 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Campos obrigatórios ausentes.' }, { status: 400 });
     }
 
-    await createChampionship({ name, split, year: Number(year), regionId });
+    await createChampionship({
+      name,
+      split,
+      year: Number(year),
+      regionId, 
+    });
 
     return NextResponse.json({ message: 'Campeonato criado com sucesso!' });
   } catch (error) {

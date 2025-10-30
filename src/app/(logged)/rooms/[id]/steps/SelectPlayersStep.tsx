@@ -15,6 +15,7 @@ export default function SelectPlayersStep({
   nextStep,
   onUpdateRoom,
 }: SelectPlayersStepProps) {
+  // const [votedPlayerIds, setVotedPlayerIds] = useState<string[]>([]);
   const [selectedPlayerId, setSelectedPlayerId] = useState<string | null>(null);
   const [players, setPlayers] = useState<TeamPlayer[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
@@ -30,6 +31,21 @@ export default function SelectPlayersStep({
 
     fetchTeams();
   }, []);
+
+  // useEffect(() => {
+  //   const checkVotes = async () => {
+  //     const results = await Promise.all(
+  //       room.players.map(player =>
+  //         hasPlayerBeenFullyVoted(room.id, player.uid, room.users.length)
+  //       )
+  //     );
+  
+  //     const voted = room.players.filter((_, i) => results[i]).map(p => p.uid);
+  //     setVotedPlayerIds(voted);
+  //   };
+  
+  //   checkVotes();
+  // }, [room]);
 
   if (!user || loading || userLoading) {
     return <Spinner center={true} />;
@@ -72,22 +88,22 @@ export default function SelectPlayersStep({
           const isVoted = room.voted?.players?.includes(player.uid);
 
           return (
-          <div
-            key={player.uid}
+            <div
+              key={player.uid}
               className={`${styles.card} ${selectedPlayerId === player.uid ? styles.selected : ''} ${isVoted ? styles.voted : ''}`}
               onClick={() => !isVoted && handleSelect(player.uid)}
-          >
+            >
               {isVoted && <Icon name="check" className={styles.checkIcon} size='30' />}
-            <Image
-              src={player.image}
-              alt={player.name}
-              width={96}
-              height={96}
-              className={styles.avatar}
-            />
-            <p className={styles.name}>{player.name}</p>
-            <p className={styles.role}>{player.role}</p>
-          </div>
+              <Image
+                src={player.image}
+                alt={player.name}
+                width={96}
+                height={96}
+                className={styles.avatar}
+              />
+              <p className={styles.name}>{player.name}</p>
+              <p className={styles.role}>{player.role}</p>
+            </div>
           )
         })}
       </div>

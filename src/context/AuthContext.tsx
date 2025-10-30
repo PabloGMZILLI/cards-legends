@@ -24,7 +24,11 @@ export const AuthProviderContext = ({ children }: { children: React.ReactNode })
   const user = session?.user ?? null;
 
   return (
-    <AuthContext.Provider value={{ isLoggedIn, loading, user }}>
+    <AuthContext.Provider value={{
+      isLoggedIn,
+      loading,
+      user, 
+    }}>
       {children}
     </AuthContext.Provider>
   );

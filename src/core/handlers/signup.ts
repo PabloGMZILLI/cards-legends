@@ -16,20 +16,32 @@ export async function signupHandler(req: NextRequest): Promise<NextResponse> {
       await updateProfile(user, { displayName: name });
 
       return NextResponse.json(
-        { success: true, message: 'Signup successful!' },
-        { status: 201, headers: { Location: '/login' } }
+        {
+          success: true,
+          message: 'Signup successful!', 
+        },
+        {
+          status: 201,
+          headers: { Location: '/login' }, 
+        },
       );
     }
 
     return NextResponse.json(
-      { success: false, message: 'Signup failed' },
-      { status: 400 }
+      {
+        success: false,
+        message: 'Signup failed', 
+      },
+      { status: 400 },
     );
 
   } catch (error) {
     return NextResponse.json(
-      { success: false, message: (error as Error)?.message || 'Signup failed' },
-      { status: 400 }
+      {
+        success: false,
+        message: (error as Error)?.message || 'Signup failed', 
+      },
+      { status: 400 },
     );
   }
 }

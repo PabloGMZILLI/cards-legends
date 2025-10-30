@@ -9,7 +9,7 @@ export function useTempVotes(roomId: string, playerId: string) {
   useEffect(() => {
     const q = query(
       collection(db, `rooms/${roomId}/votesTemp`),
-      where('teamPlayer.uid', '==', playerId)
+      where('teamPlayer.uid', '==', playerId),
     );
 
     const unsub = onSnapshot(q, (snap) => {

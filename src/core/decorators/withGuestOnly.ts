@@ -13,5 +13,5 @@ export async function withGuestOnly(request: NextRequest) {
     return NextResponse.redirect(new URL('/dashboard', request.url));
   }
 
-  return NextResponse.next();
+  return;
 }

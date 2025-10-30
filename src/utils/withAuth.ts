@@ -5,7 +5,7 @@ export type AuthContext = {
 };
 
 export const withAuth = async <T>(
-  handler: (ctx: AuthContext) => Promise<T>
+  handler: (ctx: AuthContext) => Promise<T>,
 ): Promise<T> => {
   const token = await getSessionCookie();
   return handler({ token });

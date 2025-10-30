@@ -8,15 +8,18 @@ export const getChampionships = async (): Promise<ChampionshipWithRegion[]> => {
   const championships: ChampionshipWithRegion[] = [];
 
   for (const docSnap of snapshot.docs) {
-    const data = { ...docSnap.data(), id: docSnap.id } as Championship;
+    const data = {
+      ...docSnap.data(),
+      id: docSnap.id, 
+    } as Championship;
     let regionData: Region | undefined;
 
     try {
       const regionSnap = await getDoc(data.region);
       if (regionSnap.exists()) {
         regionData = {
-            ...regionSnap.data(),
-            id: regionSnap.id,
+          ...regionSnap.data(),
+          id: regionSnap.id,
         } as Region;
       }
     } catch (err) {
@@ -39,17 +42,17 @@ export const createChampionship = async (data: {
     year: number;
     regionId: string;
   }) => {
-    const { name, split, year, regionId } = data;
+  const { name, split, year, regionId } = data;
   
-    const regionRef: DocumentReference<Region> = doc(db, 'regions', regionId).withConverter(createConverter<Region>());
+  const regionRef: DocumentReference<Region> = doc(db, 'regions', regionId).withConverter(createConverter<Region>());
 
-    const championship: Omit<Championship, 'id'> = {
-        name,
-        split,
-        year,
-        region: regionRef,
-        matches: [],
-    };
-  
-    await addDoc(collection(db, 'championships'), championship);
+  const championship: Omit<Championship, 'id'> = {
+    name,
+    split,
+    year,
+    region: regionRef,
+    matches: [],
   };
+  
+  await addDoc(collection(db, 'championships'), championship);
+};

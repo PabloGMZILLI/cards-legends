@@ -1,0 +1,79 @@
+.container {
+    padding: 2rem;
+}
+
+.title {
+    font-size: 2rem;
+    text-align: center;
+}
+
+.championSection {
+    padding: 2rem;
+    border-radius: 1rem;
+    text-align: center;
+}
+
+.championSection h2 {
+    font-size: larger;
+    font-weight: 700;
+}
+
+.championCard {
+    padding: 1.5rem;
+    border-radius: 0.75rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    display: inline-block;
+}
+
+.filtersSection {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 2rem;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.rankingSection {
+    margin-top: 2rem;
+    font-size: larger;
+    font-weight: 700;
+}
+
+.rankingSection h2 {
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.rankingTable {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: center;
+}
+
+.rankingTable th,
+.rankingTable td {
+    padding: 12px 16px;
+    border-bottom: 1px solid #ddd;
+}
+
+.rankingTable th {
+    background-color: var(--background-secondary-color);
+    font-weight: bold;
+}
+
+.rankingTable tbody tr:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+}
+
+.playerCell {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    justify-content: center;
+}
+
+.teamLogo {
+    width: 30px;
+    height: 30px;
+    object-fit: contain;
+}
