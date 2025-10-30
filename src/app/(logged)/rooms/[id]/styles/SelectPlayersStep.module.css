@@ -39,8 +39,8 @@
 }
 
 .selected {
-  border-color: #4ade80;
-  box-shadow: 0 0 0 3px rgba(74, 222, 128, 0.4);
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px var(--color-primary-dark);
 }
 
 .avatar {
@@ -60,23 +60,6 @@
   color: #aaaaaa;
 }
 
-.nextButton {
-  background-color: #4ade80;
-  color: #1f1f1f;
-  font-weight: 600;
-  padding: 0.75rem 1.5rem;
-  border-radius: 0.5rem;
-  border: none;
-  cursor: pointer;
-  transition: background-color 0.2s ease;
-}
-
-.nextButton:disabled {
-  background-color: #2f2f2f;
-  color: #888;
-  cursor: not-allowed;
-}
-
 .waitingContainer {
   display: flex;
   align-items: center;
@@ -88,12 +71,13 @@
   font-size: 1.125rem;
   color: #cccccc;
 }
+
 .checkIcon {
-  color: #4ade80;
+  color: var(--color-primary);
 }
 
 .voted {
   background-color: #1f1f1f;
-  border: 2px solid #4ade80;
-  box-shadow: 0 0 0 3px rgba(74, 222, 128, 0.4);
+  border: 2px solid var(--color-primary);
+  box-shadow: 0 0 0 3px var(--color-primary-dark);
 }

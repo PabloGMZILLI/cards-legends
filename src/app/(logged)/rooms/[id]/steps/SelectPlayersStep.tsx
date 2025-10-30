@@ -9,6 +9,7 @@ import { useAuth } from '@/context/AuthContext';
 import { Icon, Spinner } from '@/components';
 import { TeamPlayer } from '@/types/Team';
 import { getPlayersByTeam } from '@/services/playersService';
+import { NextButton } from '../components/NextButton';
 
 export default function SelectPlayersStep({
   room,
@@ -107,10 +108,10 @@ export default function SelectPlayersStep({
           )
         })}
       </div>
-
-      <button onClick={handleNextClick} className={styles.nextButton} disabled={!selectedPlayerId}>
-        Próximo
-      </button>
+      <NextButton
+        disabled={!selectedPlayerId}
+        onClick={handleNextClick}
+      />
     </div>
   );
 }

@@ -28,7 +28,7 @@
 }
 
 .primaryButton {
-  background-color: #2d9c4c;
+  background-color: var(--color-primary);
   color: white;
   border: none;
   padding: 10px 16px;
@@ -37,7 +37,7 @@
 }
 
 .primaryButton:hover {
-  background-color: #21863e;
+  background-color: var(--color-secondary);
 }
 
 .warningButton {
@@ -54,7 +54,7 @@
 }
 
 .dangerButton {
-  background-color: #e53935;
+  background-color: var(--color-danger);
   color: white;
   border: none;
   padding: 10px 16px;
@@ -63,7 +63,7 @@
 }
 
 .dangerButton:hover {
-  background-color: #c62828;
+  background-color: var(--color-danger-dark);
 }
 
 .switchCard {

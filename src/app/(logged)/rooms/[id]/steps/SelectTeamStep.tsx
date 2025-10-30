@@ -2,18 +2,19 @@
 
 import { useEffect, useState } from 'react';
 import { Room } from '@/types/RoomTypes';
-import { Icon, Spinner } from '@/components';
+import { Spinner } from '@/components';
 import Image from 'next/image';
 
 import styles from '../styles/SelectTeamStep.module.css';
 import { useAuth } from '@/context/AuthContext';
 import { TeamType } from '@/types/Team';
 import { getTeamsFromRounds } from '@/services/teamsService';
+import { NextButton } from '../components/NextButton';
 
 type SelectTeamStepProps = {
-    room: Room;
-    onSelectTeam: (room: Room) => void;
-    nextStep: () => void;
+  room: Room;
+  onSelectTeam: (room: Room) => void;
+  nextStep: () => void;
 };
 
 export default function SelectTeamStep({
@@ -58,7 +59,7 @@ export default function SelectTeamStep({
     setSelectedTeamId(team.id)
     onSelectTeam({
       ...room,
-      selectedTeam: team, 
+      selectedTeam: team,
     });
   }
 
@@ -73,26 +74,23 @@ export default function SelectTeamStep({
             className={`${styles.card} ${selectedTeamId === team.id ? styles.selected : ''}`}
             onClick={() => handleSelectTeam(team)} >
             {team.logoUrl &&
-                            <Image
-                              src={team.logoUrl}
-                              width={64}
-                              height={64}
-                              alt={team.name}
-                              className={styles.logo}
-                            />
+              <Image
+                src={team.logoUrl}
+                width={64}
+                height={64}
+                alt={team.name}
+                className={styles.logo}
+              />
             }
             <h3 className={styles.name}>{team.name}</h3>
           </div>
         ))}
       </div>
 
-      <button
-        className={styles.nextButton}
+      <NextButton
         disabled={!selectedTeamId}
         onClick={nextStep}
-      >
-                Próximo <Icon name="arrowRight" size={16} />
-      </button>
+      />
     </div>
   );
 }

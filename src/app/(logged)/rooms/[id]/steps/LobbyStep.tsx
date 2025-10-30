@@ -7,6 +7,7 @@ import { Icon, Spinner } from '@/components';
 import PlayerRoomCard from '../components/PlayerRoomCard';
 import { useAuth } from '@/context/AuthContext';
 import { CustomUser } from '@/types';
+import { NextButton } from '../components/NextButton';
 
 export default function LobbyStep({
   room,
@@ -119,12 +120,10 @@ export default function LobbyStep({
         {isLeader && (
           <div className={styles.buttonGroup}>
             <button className={styles.dangerButton}>Fechar Sala</button>
-            <button
+            <NextButton
               onClick={nextStep}
-              className={styles.primaryButton}
-            >
-              Iniciar
-            </button>
+              label='Iniciar Avaliação'
+            />
           </div>
         )}
       </section>

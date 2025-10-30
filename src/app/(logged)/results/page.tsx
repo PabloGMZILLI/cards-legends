@@ -2,35 +2,18 @@
 
 import { useState } from 'react';
 import styles from './ResultsPage.module.css';
-import { Input, Select, PlayerCard } from '@/components';
+import { Input, PlayerCard } from '@/components';
 import Image from 'next/image';
 import { ResolvedPlayer } from '@/types/RoomTypes';
-
-const mockStreamers = [
-  {
-    label: 'Todos',
-    value: '',
-  },
-  {
-    label: 'Streamer Baiano',
-    value: 'Baiano',
-  },
-  {
-    label: 'Streamer Minerva',
-    value: 'Minerva',
-  },
-];
 
 type PlayerResult = {
   player: ResolvedPlayer;
   score: number;
-  streamer: string;
 }
 
 const mockPlayers: PlayerResult[] = [
   {
     score: 95,
-    streamer: 'Baiano',
     player: {
       uid: '1',
       name: 'Titan',
@@ -58,16 +41,130 @@ const mockPlayers: PlayerResult[] = [
       image: '/images/players/titan.png',
     },
   },
+  {
+    score: 92,
+    player: {
+      uid: '2',
+      name: 'Cacia',
+      role: 'Mid',
+      team: {
+        id: '',
+        name: '',
+        region: {
+          id: '',
+          name: '',
+          icon: '/images/regions/lta-sul.png',
+        },
+        logoUrl: '/images/teams/idl.png',
+      },
+      nacionality: {
+        id: '',
+        name: '',
+        icon: '/images/flags/br.png',
+      },
+      region: {
+        id: '',
+        name: '',
+        icon: '/images/regions/lta-sul.png',
+      },
+      image: '/images/players/cacia.png',
+    },
+  },
+  {
+    score: 88,
+    player: {
+      uid: '3',
+      name: 'Wizer',
+      role: 'Top',
+      team: {
+        id: '',
+        name: '',
+        region: {
+          id: '',
+          name: '',
+          icon: '/images/regions/lta-north.png',
+        },
+        logoUrl: '/images/teams/pain.png',
+      },
+      nacionality: {
+        id: '',
+        name: '',
+        icon: '/images/flags/br.png',
+      },
+      region: {
+        id: '',
+        name: '',
+        icon: '/images/regions/lta-north.png',
+      },
+      image: '/images/players/wizer.png',
+    },
+  },
+  {
+    score: 87,
+    player: {
+      uid: '4',
+      name: 'Kuri',
+      role: 'Jungle',
+      team: {
+        id: '',
+        name: '',
+        region: {
+          id: '',
+          name: '',
+          icon: '/images/regions/lta-sul.png',
+        },
+        logoUrl: '/images/teams/idl.png',
+      },
+      nacionality: {
+        id: '',
+        name: '',
+        icon: '/images/flags/south-korea.png',
+      },
+      region: {
+        id: '',
+        name: '',
+        icon: '/images/regions/lta-sul.png',
+      },
+      image: '/images/players/kuri.png',
+    },
+  },
+  {
+    score: 85,
+    player: {
+      uid: '5',
+      name: 'Roamer',
+      role: 'Support',
+      team: {
+        id: '',
+        name: '',
+        region: {
+          id: '',
+          name: '',
+          icon: '/images/regions/lta-north.png',
+        },
+        logoUrl: '/images/teams/pain.png',
+      },
+      nacionality: {
+        id: '',
+        name: '',
+        icon: '/images/flags/br.png',
+      },
+      region: {
+        id: '',
+        name: '',
+        icon: '/images/regions/lta-north.png',
+      },
+      image: '/images/players/roamer.png',
+    },
+  },
 ];
 
 export default function ResultsPage() {
   const [search, setSearch] = useState('');
-  const [streamer, setStreamer] = useState('');
 
   const filteredPlayers = mockPlayers.filter((result) => {
     return (
-      result.player.name.toLowerCase().includes(search.toLowerCase()) &&
-      (streamer === '' || result.streamer === streamer)
+      result.player.name.toLowerCase().includes(search.toLowerCase())
     );
   });
 
@@ -89,13 +186,6 @@ export default function ResultsPage() {
           placeholder="Buscar jogador..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-        />
-
-        <Select
-          options={mockStreamers}
-          value={streamer}
-          onChange={(val) => setStreamer(val as string)}
-          placeholder="Filtrar por Streamer"
         />
       </section>
 

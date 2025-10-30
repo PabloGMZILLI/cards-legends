@@ -50,12 +50,14 @@ export default function BaseSelect({ label, options, value, onChange, multi = fa
           singleValue: (provided) => ({
             ...provided,
             color: 'var(--color-white)',
-            backgroundColor: 'var(--background-primary-color)',
+          }),
+          multiValue: (provided) => ({
+            ...provided,
+            backgroundColor: 'var(--background-custom-color)',
           }),
           multiValueLabel: (provided) => ({
             ...provided,
             color: 'var(--color-white)',
-            backgroundColor: 'var(--background-primary-color)',
           }),
           control: (provided, state) => ({
             ...provided,

@@ -1,0 +1,22 @@
+.nextButton {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background-color: var(--color-primary);
+    color: white;
+    padding: 0.6rem 1rem;
+    border-radius: 8px;
+    font-size: 1rem;
+    border: none;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.nextButton:hover:not(:disabled) {
+    background-color: var(--color-primary-dark);
+}
+
+.nextButton:disabled {
+    background-color: var(--color-secondary-light);
+    cursor: not-allowed;
+}

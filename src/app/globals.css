@@ -19,9 +19,9 @@ label {
 }
 
 :root {
-  --color-primary: #4ade80;
-  --color-primary-light: #86efac;
-  --color-primary-dark: #16a34a;
+  --color-primary: #618cc9;
+  --color-primary-light: #5678a8;
+  --color-primary-dark: #3f5d87;
   --color-secondary: #64748b;
   --color-secondary-light: #94a3b8;
   --color-secondary-dark: #475569;
@@ -40,6 +40,7 @@ label {
   --background-secondary-color: #1e1e2f;
   --background-secondary-light-color: #2a2a3b;
   --background-accent-color: #334155;
+  --background-custom-color: #3f5d87;
 
   --color-white: #ffffff;
   --color-black: #000000;

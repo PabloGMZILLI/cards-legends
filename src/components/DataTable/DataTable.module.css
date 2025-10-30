@@ -14,7 +14,6 @@
 .table th {
     padding: 12px 16px;
     text-align: center;
-    border-bottom: 1px solid var(--color-secondary-light);
     font-weight: 600;
     font-size: 0.95rem;
 }
@@ -34,6 +33,10 @@
 
 .odd {
     background-color: var(--background-primary-color);
+}
+
+.table tr:hover {
+    border-bottom: 1px solid var(--color-secondary-light);
 }
 
 .table tr:hover {

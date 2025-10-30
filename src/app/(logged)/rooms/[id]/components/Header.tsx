@@ -19,7 +19,7 @@ const stepLabels: Record<RoomStep, string> = {
 const getStatusLabel = (status: RoomStatus) => {
   switch (status) {
     case 'waiting':
-      return 'Aguardando jogadores';
+      return 'Aguardando avaliadores...';
     case 'inProgress':
       return 'Em andamento';
     case 'finished':

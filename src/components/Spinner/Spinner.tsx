@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default function Spinner({ size = 24, center = false }: { size?: number, center?: boolean }) {
+export default function Spinner({ size = 24, center = false, color = 'white' }: { size?: number, center?: boolean, color?: string }) {
   return (
     <div
       style={{
@@ -10,10 +10,11 @@ export default function Spinner({ size = 24, center = false }: { size?: number, 
       }}
     >
       <svg
-        className="animate-spin text-white"
+        className="animate-spin"
         style={{
           width: size,
-          height: size, 
+          height: size,
+          color: color,
         }}
         xmlns="http://www.w3.org/2000/svg"
         fill="none"

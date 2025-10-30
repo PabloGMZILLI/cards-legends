@@ -2,35 +2,28 @@
     padding: 2rem;
 }
 
+.container h2 {
+    font-weight: 700;
+    font-size: x-large;
+    text-align: center;
+}
+
 .title {
     font-size: 2rem;
     text-align: center;
 }
 
 .championSection {
-    padding: 2rem;
+    padding: 1rem;
     border-radius: 1rem;
     text-align: center;
-}
-
-.championSection h2 {
-    font-size: larger;
-    font-weight: 700;
-}
-
-.championCard {
-    padding: 1.5rem;
-    border-radius: 0.75rem;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    display: inline-block;
+    justify-items: center;
 }
 
 .filtersSection {
     display: flex;
-    gap: 1rem;
     margin-bottom: 2rem;
     justify-content: center;
-    flex-wrap: wrap;
 }
 
 .rankingSection {
@@ -39,21 +32,16 @@
     font-weight: 700;
 }
 
-.rankingSection h2 {
-    text-align: center;
-    margin-bottom: 10px;
-}
-
 .rankingTable {
     width: 100%;
     border-collapse: collapse;
     text-align: center;
+    margin-top: 1rem;
 }
 
 .rankingTable th,
 .rankingTable td {
     padding: 12px 16px;
-    border-bottom: 1px solid #ddd;
 }
 
 .rankingTable th {
@@ -61,8 +49,12 @@
     font-weight: bold;
 }
 
-.rankingTable tbody tr:hover {
-    background-color: rgba(0, 0, 0, 0.05);
+.rankingTable tr {
+    border-bottom: 1px solid #ddd;
+
+    &:hover {
+        background-color: rgba(142, 142, 142, 0.46);
+    }
 }
 
 .playerCell {

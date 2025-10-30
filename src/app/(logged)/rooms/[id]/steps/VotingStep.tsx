@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { Button, EditPlayerCard, Spinner } from '@/components';
+import { EditPlayerCard, Spinner } from '@/components';
 import styles from '../styles/VotingStep.module.css';
 import { VotingStepProps } from '@/types/RoomTypes';
 import { TeamPlayer, TeamType } from '@/types/Team';
@@ -14,6 +14,7 @@ import {
   saveFinalVotes,
   markPlayerAsVoted,
 } from '@/services/voteService';
+import { NextButton } from '../components/NextButton';
 
 export default function VotingStep({
   room,
@@ -82,13 +83,13 @@ export default function VotingStep({
       </div>
 
       <p className={styles.voteStatus}>
-                Votos recebidos: {votes.length} / {room.users.length}
+        Votos recebidos: {votes.length} / {room.users.length}
       </p>
 
       {isLeader && (
-        <Button onClick={handleNext} disabled={!hasEveryoneVoted}>
-                    Próximo
-        </Button>
+        <NextButton
+          onClick={handleNext} disabled={!hasEveryoneVoted}
+        />
       )}
     </div>
   );
